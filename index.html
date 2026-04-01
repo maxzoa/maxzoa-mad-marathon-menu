@@ -446,7 +446,7 @@
 
   <script>
     const DEFAULT_CONFIG = {
-      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [200, 200] },
+      image: { templatePath: './template.png', outputName: 'menu.png', size: [200, 200] },
       font: { sizeText: 18, sizeKcal: 26, totalFontSize: 34, family: 'Segoe UI, sans-serif', weight: '700', lineGap: 8 },
       render: { textColor: 'rgba(79, 92, 148, 1)', totalPrefix: 'Общее количество ккал на день:', kcalSuffix: 'ккал' },
       blocks: {
@@ -620,7 +620,7 @@
     }
     function readSettingsFromUI() {
       CONFIG.image.templatePath = document.getElementById('setting-templatePath').value.trim() || './template.png';
-      CONFIG.image.outputName = document.getElementById('setting-outputName').value.trim() || 'menu_output.png';
+      CONFIG.image.outputName = document.getElementById('setting-outputName').value.trim() || 'menu.png';
       CONFIG.image.size[0] = Number(document.getElementById('setting-imageWidth').value) || 150;
       CONFIG.image.size[1] = Number(document.getElementById('setting-imageHeight').value) || 150;
       CONFIG.font.sizeText = Number(document.getElementById('setting-sizeText').value) || 18;
