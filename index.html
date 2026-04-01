@@ -588,7 +588,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script>
     const DEFAULT_CONFIG = {
-      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [150, 150] },
+      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [200, 200] },
       font: {
         sizeText: 18,
         sizeKcal: 26,
@@ -602,15 +602,15 @@
         totalPrefix: 'Общее количество ккал на день:',
         kcalSuffix: 'ккал'
       },
-      dayTitle: { text: '', pos: [512, 260], fontSize: 30 },
+      dayTitle: { text: '', pos: [512, 20], fontSize: 30 },
       blocks: {
-        'Завтрак': { imageCenter: [170, 400], textBox: [340, 300, 990, 500], kcalPos: [50, 290] },
-        'Обед': { imageCenter: [170, 651], textBox: [340, 585, 990, 790], kcalPos: [50, 575] },
-        'Ужин': { imageCenter: [170, 891], textBox: [340, 830, 990, 1030], kcalPos: [50, 815] },
-        'Перекус': { imageCenter: [170, 1131], textBox: [340, 1073, 990, 1210], kcalPos: [50, 1053] },
-        'Дополнительно': { imageCenter: [170, 1400], textBox: [340, 1335, 990, 1460], kcalPos: [50, 1310] }
+        'Завтрак': { imageCenter: [170, 400], textBox: [340, 300, 1000, 500], kcalPos: [50, 290] },
+        'Обед': { imageCenter: [170, 651], textBox: [340, 585, 1000, 790], kcalPos: [50, 575] },
+        'Ужин': { imageCenter: [170, 891], textBox: [340, 830, 1000, 1030], kcalPos: [50, 815] },
+        'Перекус': { imageCenter: [170, 1131], textBox: [340, 1073, 1000, 1210], kcalPos: [50, 1053] },
+        'Дополнительно': { imageCenter: [170, 1400], textBox: [340, 1335, 1000, 1460], kcalPos: [50, 1310] }
       },
-      totalKcal: { pos: [55, 1490], color: 'rgba(79, 92, 148, 1)' }
+      totalKcal: { pos: [55, 1495], color: 'rgba(79, 92, 148, 1)' }
     };
 
     const SETTINGS_KEY = 'mad-marathon-menu-settings-v2';
