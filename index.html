@@ -20,6 +20,7 @@
       --space-8: 2rem;
       --space-10: 2.5rem;
       --space-12: 3rem;
+      --space-16: 4rem;
       --color-bg: #f7f6f2;
       --color-surface: #f9f8f5;
       --color-surface-2: #fbfbf9;
@@ -33,9 +34,9 @@
       --radius-lg: 0.75rem;
       --radius-xl: 1rem;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-      --shadow-md: 0 10px 32px rgba(0,0,0,0.12);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.10);
       --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-      --font-body: "Segoe UI", system-ui, sans-serif;
+      --font-body: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
     [data-theme="dark"] {
       --color-bg: #14131a;
@@ -47,7 +48,7 @@
       --color-primary: #9aa7ff;
       --color-primary-hover: #b1bbff;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.22);
-      --shadow-md: 0 10px 32px rgba(0,0,0,0.35);
+      --shadow-md: 0 10px 32px rgba(0,0,0,0.38);
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -58,13 +59,16 @@
       font-size: var(--text-base);
       line-height: 1.55;
       color: var(--color-text);
-      background: radial-gradient(circle at top, rgba(154,167,255,0.18), transparent 35%), var(--color-bg);
+      background:
+        radial-gradient(circle at top, rgba(154,167,255,0.18), transparent 40%),
+        var(--color-bg);
       overflow-x: hidden;
     }
     button, input, textarea, select { font: inherit; }
     button { cursor: pointer; }
     img, canvas { display: block; max-width: 100%; height: auto; }
     .page { width: 100%; margin: 0; }
+
     .topbar {
       display: flex;
       justify-content: space-between;
@@ -72,11 +76,33 @@
       gap: var(--space-4);
       padding: var(--space-4);
     }
-    .brand { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-    .brand-mark { width: 40px; height: 40px; color: var(--color-primary); flex: 0 0 auto; }
-    .brand h1 { margin: 0; font-size: clamp(2rem, 1.45rem + 2.1vw, 3.25rem); line-height: 1.04; }
-    .brand p { margin: 0.18rem 0 0; color: var(--color-text-muted); font-size: clamp(0.95rem, 0.88rem + 0.25vw, 1.15rem); }
-    .top-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+    }
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      color: var(--color-primary);
+      flex: 0 0 auto;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(2rem, 1.45rem + 2.1vw, 3.25rem);
+      line-height: 1.04;
+    }
+    .brand p {
+      margin: 0.18rem 0 0;
+      color: var(--color-text-muted);
+      font-size: clamp(0.95rem, 0.88rem + 0.25vw, 1.15rem);
+    }
+    .top-actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
     .theme-toggle, .top-btn, .ghost-btn, .primary-btn, .file-picker-btn {
       display: inline-flex;
       align-items: center;
@@ -85,22 +111,38 @@
       border-radius: var(--radius-md);
       padding: 0.68rem 0.95rem;
       border: 1px solid var(--color-border);
-      transition: transform var(--transition-interactive), background var(--transition-interactive), border-color var(--transition-interactive), color var(--transition-interactive);
+      transition:
+        transform var(--transition-interactive),
+        background var(--transition-interactive),
+        border-color var(--transition-interactive),
+        color var(--transition-interactive);
       text-decoration: none;
       white-space: nowrap;
       user-select: none;
     }
-    .theme-toggle, .top-btn, .ghost-btn, .file-picker-btn { background: var(--color-surface-2); color: var(--color-text); }
-    .primary-btn { background: var(--color-primary); color: #fff; border-color: transparent; }
-    .theme-toggle:hover, .top-btn:hover, .ghost-btn:hover, .primary-btn:hover, .file-picker-btn:hover { transform: translateY(-1px); }
+    .theme-toggle, .top-btn, .ghost-btn, .file-picker-btn {
+      background: var(--color-surface-2);
+      color: var(--color-text);
+    }
+    .primary-btn {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: transparent;
+    }
+    .theme-toggle:hover, .top-btn:hover, .ghost-btn:hover,
+    .primary-btn:hover, .file-picker-btn:hover {
+      transform: translateY(-1px);
+    }
     .primary-btn:hover { background: var(--color-primary-hover); }
+
     .app-shell {
       display: grid;
       grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr);
       gap: var(--space-4);
       padding: 0 var(--space-4) var(--space-4);
-      align-items: start;
+      align-items: flex-start;
     }
+
     .panel, .preview-panel, .settings-drawer {
       background: color-mix(in srgb, var(--color-surface) 92%, transparent);
       border: 1px solid var(--color-border);
@@ -111,10 +153,18 @@
     }
     .panel, .preview-panel { padding: var(--space-4); }
     .panel { position: sticky; top: var(--space-3); }
-    .panel h2, .preview-panel h2, .settings-header h2 { margin: 0; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.2rem); line-height: 1.06; }
-    .preview-note, .section-note, .field-help { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+    .panel h2, .preview-panel h2, .settings-header h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 1.2rem + 1vw, 2.2rem);
+      line-height: 1.06;
+    }
+    .preview-note, .section-note, .field-help {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
     .preview-note { margin: 0 0 var(--space-3); }
-    .settings-header .section-note { margin: var(--space-2) 0 0; max-width: 62ch; }
+
     .block-card, .settings-group {
       background: var(--color-surface-2);
       border: 1px solid var(--color-border);
@@ -122,18 +172,27 @@
       padding: var(--space-4);
       margin-bottom: var(--space-3);
     }
-    .block-card h3, .settings-group h3 { margin: 0 0 var(--space-3); font-size: clamp(1.18rem, 1.05rem + 0.4vw, 1.45rem); }
+    .block-card h3, .settings-group h3 {
+      margin: 0 0 var(--space-3);
+      font-size: clamp(1.18rem, 1.05rem + 0.4vw, 1.45rem);
+    }
+
     .field-grid { display: grid; gap: var(--space-3); }
     .field-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
     .field {
       display: grid;
       gap: var(--space-2);
       margin-bottom: var(--space-3);
       min-width: 0;
-      align-content: start;
+      align-content: flex-start;
     }
     .field:last-child { margin-bottom: 0; }
-    .field label { font-size: var(--text-sm); color: var(--color-text-muted); }
+    .field label {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
     input[type="text"], input[type="number"], textarea, select {
       width: 100%;
       border: 1px solid var(--color-border);
@@ -147,9 +206,25 @@
     textarea { min-height: 92px; resize: vertical; }
     input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
     input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    .file-row { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
-    .file-input { position: absolute; width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; z-index: -1; }
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .file-row {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .file-input {
+      position: absolute;
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
     .file-name-chip {
       display: inline-flex;
       align-items: center;
@@ -165,8 +240,20 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin-top: var(--space-3); }
-    .status { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-text-muted); min-height: 1.5em; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+    }
+    .status {
+      margin-top: var(--space-3);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      min-height: 1.5em;
+    }
+
     .canvas-wrap {
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--color-border);
@@ -174,8 +261,20 @@
       padding: var(--space-2);
       overflow: auto;
     }
-    #previewCanvas { width: min(100%, 640px); margin: 0 auto; border-radius: var(--radius-md); }
-    .meta { display: flex; flex-wrap: wrap; gap: var(--space-3); color: var(--color-text-muted); font-size: var(--text-sm); margin-top: var(--space-3); }
+    #previewCanvas {
+      width: min(100%, 640px);
+      margin: 0 auto;
+      border-radius: var(--radius-md);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+      margin-top: var(--space-3);
+    }
+
     .settings-drawer {
       position: fixed;
       top: 0;
@@ -191,21 +290,28 @@
       grid-template-rows: auto 1fr auto;
     }
     .settings-drawer.open { transform: translateX(0); }
+
     .settings-header {
       padding: var(--space-4);
       border-bottom: 1px solid var(--color-border);
       display: grid;
       grid-template-columns: 1fr auto;
       gap: var(--space-3);
-      align-items: start;
+      align-items: flex-start;
       background: color-mix(in srgb, var(--color-surface) 96%, transparent);
     }
+    .settings-header .section-note {
+      margin-top: var(--space-2);
+      max-width: 62ch;
+    }
+
     .settings-body {
       padding: var(--space-4);
       overflow-y: auto;
       overflow-x: hidden;
       min-height: 0;
     }
+
     .settings-footer {
       padding: var(--space-4);
       border-top: 1px solid var(--color-border);
@@ -214,6 +320,7 @@
       gap: var(--space-2);
       background: color-mix(in srgb, var(--color-surface) 96%, transparent);
     }
+
     .overlay {
       position: fixed;
       inset: 0;
@@ -225,6 +332,7 @@
       z-index: 35;
     }
     .overlay.open { opacity: 1; pointer-events: auto; }
+
     @media (max-width: 1180px) {
       .app-shell { grid-template-columns: 1fr; }
       .panel { position: static; }
@@ -253,7 +361,10 @@
       #previewCanvas { width: 100%; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
@@ -281,11 +392,14 @@
     <main class="app-shell">
       <section class="panel" aria-labelledby="form-title">
         <h2 id="form-title">Поля меню</h2>
+
         <div class="field">
-          <label for="dayTitleInput">Текст под логотипом (например: "Понедельник 6 апреля")</label>
+          <label for="dayTitleInput">Текст под логотипом (например: «Понедельник 6 апреля»)</label>
           <input id="dayTitleInput" type="text" placeholder="Понедельник 6 апреля" />
         </div>
+
         <div id="blocksContainer"></div>
+
         <div class="actions">
           <button class="primary-btn" id="downloadBtn" type="button">Сохранить меню</button>
           <button class="ghost-btn" id="previewBtn" type="button">Обновить превью</button>
@@ -315,7 +429,9 @@
     <div class="settings-header">
       <div>
         <h2 id="settings-title">Настройки</h2>
-        <p class="section-note">Здесь вынесены почти все параметры: шаблон, файл выгрузки, размеры, шрифты, цвета и координаты блоков. Я также выровнял сетку и поведение нижней панели кнопок.</p>
+        <p class="section-note">
+          Здесь вынесены почти все параметры: шаблон, файл выгрузки, размеры, шрифты, цвета, координаты блоков и подпись под логотипом.
+        </p>
       </div>
       <button class="ghost-btn" id="closeSettingsBtn" type="button">Закрыть</button>
     </div>
@@ -364,7 +480,7 @@
           <div class="field">
             <label for="setting-sizeKcal">Размер шрифта калорий</label>
             <input id="setting-sizeKcal" type="number" />
-            <div class="field-help">Используется для строки вида “420 ккал”.</div>
+            <div class="field-help">Используется для строки вида «420 ккал».</div>
           </div>
           <div class="field">
             <label for="setting-totalFontSize">Размер шрифта общей калорийности</label>
@@ -374,7 +490,7 @@
           <div class="field">
             <label for="setting-lineGap">Дополнительный межстрочный отступ текста</label>
             <input id="setting-lineGap" type="number" />
-            <div class="field-help">Чем больше значение, тем свободнее строки друг от друга.</div>
+            <div class="field-help">Чем больше значение, тем свободнее строки.</div>
           </div>
           <div class="field">
             <label for="setting-fontWeight">Толщина шрифта</label>
@@ -385,7 +501,7 @@
               <option value="700">700 — bold</option>
               <option value="800">800 — extra bold</option>
             </select>
-            <div class="field-help">Общая толщина для текста описания, калорий и итоговой строки.</div>
+            <div class="field-help">Толщина для описания, калорий и итоговой строки.</div>
           </div>
           <div class="field">
             <label for="setting-fontFamily">Семейство шрифта canvas</label>
@@ -401,7 +517,7 @@
           <div class="field">
             <label for="setting-textColor">Цвет описания и калорий</label>
             <input id="setting-textColor" type="text" />
-            <div class="field-help">Можно использовать rgba(...), #RRGGBB или css-цвет.</div>
+            <div class="field-help">rgba(...), #RRGGBB или css-цвет.</div>
           </div>
           <div class="field">
             <label for="setting-totalColor">Цвет итоговой строки калорийности</label>
@@ -411,7 +527,7 @@
         </div>
       </section>
 
-            <section class="settings-group">
+      <section class="settings-group">
         <h3>Подпись под логотипом</h3>
         <div class="field-grid two">
           <div class="field">
@@ -448,12 +564,12 @@
           <div class="field">
             <label for="setting-totalPrefix">Текст перед числом общей калорийности</label>
             <input id="setting-totalPrefix" type="text" />
-            <div class="field-help">Например: “Общее количество ккал на день:”.</div>
+            <div class="field-help">Например: «Общее количество ккал на день:».</div>
           </div>
           <div class="field">
             <label for="setting-kcalSuffix">Текст после калорий в блоке</label>
             <input id="setting-kcalSuffix" type="text" />
-            <div class="field-help">Например: “ккал”.</div>
+            <div class="field-help">Например: «ккал».</div>
           </div>
         </div>
       </section>
@@ -469,12 +585,24 @@
     </div>
   </aside>
 
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script>
     const DEFAULT_CONFIG = {
       image: { templatePath: './template.png', outputName: 'menu_output.png', size: [150, 150] },
-      font: { sizeText: 18, sizeKcal: 26, totalFontSize: 34, family: 'Segoe UI, sans-serif', weight: '700', lineGap: 8 },
-      render: { textColor: 'rgba(79, 92, 148, 1)', totalPrefix: 'Общее количество ккал на день:', kcalSuffix: 'ккал' },
-      dayTitle: { text: '', pos: [512, 260], fontSize: 18 },
+      font: {
+        sizeText: 18,
+        sizeKcal: 26,
+        totalFontSize: 34,
+        family: 'Segoe UI, sans-serif',
+        weight: '700',
+        lineGap: 8
+      },
+      render: {
+        textColor: 'rgba(79, 92, 148, 1)',
+        totalPrefix: 'Общее количество ккал на день:',
+        kcalSuffix: 'ккал'
+      },
+      dayTitle: { text: '', pos: [512, 260], fontSize: 30 },
       blocks: {
         'Завтрак': { imageCenter: [170, 400], textBox: [340, 300, 990, 500], kcalPos: [50, 290] },
         'Обед': { imageCenter: [170, 651], textBox: [340, 585, 990, 790], kcalPos: [50, 575] },
@@ -505,55 +633,67 @@
     const saveSettingsBtn = document.getElementById('saveSettingsBtn');
     const loadSettingsBtn = document.getElementById('loadSettingsBtn');
     const exportSettingsBtn = document.getElementById('exportSettingsBtn');
+    const downloadProjectBtn = document.getElementById('downloadProjectBtn');
     const templateImage = new Image();
 
     function setStatus(text) { statusEl.textContent = text; }
+
     function deepMerge(target, source) {
       for (const key of Object.keys(source)) {
         if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
           if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) target[key] = {};
           deepMerge(target[key], source[key]);
-        } else target[key] = source[key];
+        } else {
+          target[key] = source[key];
+        }
       }
       return target;
     }
+
     function updateTemplateSource() {
       templateImage.src = CONFIG.image.templatePath;
       document.getElementById('metaTemplate').textContent = `Шаблон: ${CONFIG.image.templatePath}`;
       document.getElementById('metaOutput').textContent = `Файл: ${CONFIG.image.outputName}`;
-      document.getElementById('metaImageSize').textContent = `Размер картинки: ${CONFIG.image.size[0]} × ${CONFIG.image.size[1]}`;
+      document.getElementById('metaImageSize').textContent =
+        `Размер картинки: ${CONFIG.image.size[0]} × ${CONFIG.image.size[1]}`;
     }
+
     function buildForm() {
       blocksContainer.innerHTML = '';
       Object.keys(CONFIG.blocks).forEach((name) => {
         if (!state[name]) state[name] = { kcal: '', text: '', file: null, objectUrl: '' };
+
         const card = document.createElement('section');
         card.className = 'block-card';
         card.innerHTML = `<h3>${name}</h3>`;
 
         const kcalField = document.createElement('div');
         kcalField.className = 'field';
-        kcalField.innerHTML = `<label>Калории</label>`;
+        kcalField.innerHTML = '<label>Калории</label>';
         const kcalInput = document.createElement('input');
         kcalInput.type = 'number';
         kcalInput.inputMode = 'numeric';
         kcalInput.placeholder = 'Например, 420';
         kcalInput.value = state[name].kcal || '';
-        kcalInput.addEventListener('input', () => { state[name].kcal = kcalInput.value.trim(); });
+        kcalInput.addEventListener('input', () => {
+          state[name].kcal = kcalInput.value.trim();
+        });
         kcalField.append(kcalInput);
 
         const textField = document.createElement('div');
         textField.className = 'field';
-        textField.innerHTML = `<label>Описание / рецепт</label>`;
+        textField.innerHTML = '<label>Описание / рецепт</label>';
         const textArea = document.createElement('textarea');
         textArea.placeholder = 'Введи описание блюда';
         textArea.value = state[name].text || '';
-        textArea.addEventListener('input', () => { state[name].text = textArea.value; });
+        textArea.addEventListener('input', () => {
+          state[name].text = textArea.value;
+        });
         textField.append(textArea);
 
         const fileField = document.createElement('div');
         fileField.className = 'field';
-        fileField.innerHTML = `<label>Картинка</label>`;
+        fileField.innerHTML = '<label>Картинка</label>';
         const row = document.createElement('div');
         row.className = 'file-row';
         const fileInput = document.createElement('input');
@@ -598,6 +738,7 @@
         blocksContainer.append(card);
       });
     }
+
     function buildSettingsForm() {
       blockSettingsContainer.innerHTML = '';
       for (const [name, cfg] of Object.entries(CONFIG.blocks)) {
@@ -606,25 +747,63 @@
         section.innerHTML = `
           <h3>${name}</h3>
           <div class="field-grid two">
-            <div class="field"><label>X центра картинки</label><input type="number" data-path="blocks.${name}.imageCenter.0" value="${cfg.imageCenter[0]}" /><div class="field-help">Центр картинки по горизонтали.</div></div>
-            <div class="field"><label>Y центра картинки</label><input type="number" data-path="blocks.${name}.imageCenter.1" value="${cfg.imageCenter[1]}" /><div class="field-help">Центр картинки по вертикали.</div></div>
-            <div class="field"><label>X начала текстового блока</label><input type="number" data-path="blocks.${name}.textBox.0" value="${cfg.textBox[0]}" /><div class="field-help">Левая граница области текста.</div></div>
-            <div class="field"><label>Y начала текстового блока</label><input type="number" data-path="blocks.${name}.textBox.1" value="${cfg.textBox[1]}" /><div class="field-help">Верхняя граница области текста.</div></div>
-            <div class="field"><label>X конца текстового блока</label><input type="number" data-path="blocks.${name}.textBox.2" value="${cfg.textBox[2]}" /><div class="field-help">Правая граница области текста.</div></div>
-            <div class="field"><label>Y конца текстового блока</label><input type="number" data-path="blocks.${name}.textBox.3" value="${cfg.textBox[3]}" /><div class="field-help">Нижняя граница области текста.</div></div>
-            <div class="field"><label>X позиции калорий</label><input type="number" data-path="blocks.${name}.kcalPos.0" value="${cfg.kcalPos[0]}" /><div class="field-help">Горизонтальная позиция строки калорий.</div></div>
-            <div class="field"><label>Y позиции калорий</label><input type="number" data-path="blocks.${name}.kcalPos.1" value="${cfg.kcalPos[1]}" /><div class="field-help">Вертикальная позиция строки калорий.</div></div>
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.${name}.imageCenter.0" value="${cfg.imageCenter[0]}" />
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.${name}.imageCenter.1" value="${cfg.imageCenter[1]}" />
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.${name}.textBox.0" value="${cfg.textBox[0]}" />
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.${name}.textBox.1" value="${cfg.textBox[1]}" />
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.${name}.textBox.2" value="${cfg.textBox[2]}" />
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.${name}.textBox.3" value="${cfg.textBox[3]}" />
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.${name}.kcalPos.0" value="${cfg.kcalPos[0]}" />
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.${name}.kcalPos.1" value="${cfg.kcalPos[1]}" />
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
           </div>
         `;
         blockSettingsContainer.append(section);
       }
     }
+
     function setByPath(obj, path, value) {
       const parts = path.split('.');
       let current = obj;
-      for (let i = 0; i < parts.length - 1; i++) current = current[/^\d+$/.test(parts[i]) ? Number(parts[i]) : parts[i]];
-      current[/^\d+$/.test(parts.at(-1)) ? Number(parts.at(-1)) : parts.at(-1)] = value;
+      for (let i = 0; i < parts.length - 1; i++) {
+        const part = /^\d+$/.test(parts[i]) ? Number(parts[i]) : parts[i];
+        current = current[part];
+      }
+      const last = /^\d+$/.test(parts.at(-1)) ? Number(parts.at(-1)) : parts.at(-1);
+      current[last] = value;
     }
+
     function fillGlobalSettings() {
       document.getElementById('setting-templatePath').value = CONFIG.image.templatePath;
       document.getElementById('setting-outputName').value = CONFIG.image.outputName;
@@ -642,8 +821,12 @@
       document.getElementById('setting-totalY').value = CONFIG.totalKcal.pos[1];
       document.getElementById('setting-totalPrefix').value = CONFIG.render.totalPrefix;
       document.getElementById('setting-kcalSuffix').value = CONFIG.render.kcalSuffix;
+      document.getElementById('setting-dayTitleX').value = CONFIG.dayTitle.pos[0];
+      document.getElementById('setting-dayTitleY').value = CONFIG.dayTitle.pos[1];
+      document.getElementById('setting-dayTitleFont').value = CONFIG.dayTitle.fontSize;
       buildSettingsForm();
     }
+
     function readSettingsFromUI() {
       CONFIG.image.templatePath = document.getElementById('setting-templatePath').value.trim() || './template.png';
       CONFIG.image.outputName = document.getElementById('setting-outputName').value.trim() || 'menu_output.png';
@@ -664,31 +847,53 @@
       CONFIG.dayTitle.pos[0] = Number(document.getElementById('setting-dayTitleX').value) || CONFIG.dayTitle.pos[0];
       CONFIG.dayTitle.pos[1] = Number(document.getElementById('setting-dayTitleY').value) || CONFIG.dayTitle.pos[1];
       CONFIG.dayTitle.fontSize = Number(document.getElementById('setting-dayTitleFont').value) || CONFIG.dayTitle.fontSize;
-      document.querySelectorAll('[data-path]').forEach((input) => setByPath(CONFIG, input.dataset.path, Number(input.value) || 0));
+
+      document.querySelectorAll('[data-path]').forEach((input) => {
+        const raw = Number(input.value);
+        setByPath(CONFIG, input.dataset.path, Number.isFinite(raw) ? raw : 0);
+      });
+
       updateTemplateSource();
     }
+
     function fitRect(srcW, srcH, maxW, maxH) {
       const scale = Math.min(maxW / srcW, maxH / srcH);
-      return { width: Math.max(1, Math.round(srcW * scale)), height: Math.max(1, Math.round(srcH * scale)) };
+      return {
+        width: Math.max(1, Math.round(srcW * scale)),
+        height: Math.max(1, Math.round(srcH * scale))
+      };
     }
+
     function drawWrappedText(context, text, x, y, maxWidth, lineHeight) {
       const paragraphs = String(text || '').split(/\n/);
       let currentY = y;
       for (const paragraph of paragraphs) {
-        if (!paragraph.trim()) { currentY += lineHeight; continue; }
+        if (!paragraph.trim()) {
+          currentY += lineHeight;
+          continue;
+        }
         const words = paragraph.split(/\s+/);
         let line = '';
         for (const word of words) {
           const testLine = line ? `${line} ${word}` : word;
-          if (context.measureText(testLine).width <= maxWidth) line = testLine;
-          else {
-            if (line) { context.fillText(line, x, currentY); currentY += lineHeight; }
+          if (context.measureText(testLine).width <= maxWidth) {
+            line = testLine;
+          } else {
+            if (line) {
+              context.fillText(line, x, currentY);
+              currentY += lineHeight;
+            }
             line = word;
           }
         }
-        if (line) { context.fillText(line, x, currentY); currentY += lineHeight; }
+        if (line) {
+          context.fillText(line, x, currentY);
+          currentY += lineHeight;
+        }
       }
+      return currentY;
     }
+
     function loadImage(src) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -697,19 +902,38 @@
         img.src = src;
       });
     }
+
     async function renderPreview() {
-      if (!templateImage.complete) { setStatus(`Жду загрузку ${CONFIG.image.templatePath}...`); return; }
+      if (!templateImage.complete) {
+        setStatus(`Жду загрузку ${CONFIG.image.templatePath}...`);
+        return;
+      }
+
       previewCanvas.width = templateImage.naturalWidth || 1024;
       previewCanvas.height = templateImage.naturalHeight || 1536;
+
       ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
       ctx.drawImage(templateImage, 0, 0, previewCanvas.width, previewCanvas.height);
+
       let totalKcal = 0;
+
+      if (CONFIG.dayTitle && CONFIG.dayTitle.text) {
+        ctx.fillStyle = CONFIG.render.textColor;
+        ctx.font = `${CONFIG.font.weight} ${CONFIG.dayTitle.fontSize}px ${CONFIG.font.family}`;
+        ctx.textBaseline = 'top';
+        ctx.textAlign = 'center';
+        ctx.fillText(CONFIG.dayTitle.text, CONFIG.dayTitle.pos[0], CONFIG.dayTitle.pos[1]);
+        ctx.textAlign = 'start';
+      }
+
       for (const [name, blockCfg] of Object.entries(CONFIG.blocks)) {
         const block = state[name] || {};
         const kcal = String(block.kcal || '').trim();
         const text = String(block.text || '').trim();
         const fileUrl = block.objectUrl;
+
         if (/^\d+$/.test(kcal)) totalKcal += Number(kcal);
+
         if (fileUrl) {
           try {
             const img = await loadImage(fileUrl);
@@ -719,6 +943,7 @@
             ctx.drawImage(img, x, y, rect.width, rect.height);
           } catch (_) {}
         }
+
         if (text) {
           const [x1, y1, x2] = blockCfg.textBox;
           ctx.fillStyle = CONFIG.render.textColor;
@@ -726,6 +951,7 @@
           ctx.textBaseline = 'top';
           drawWrappedText(ctx, text, x1, y1, x2 - x1, CONFIG.font.sizeText + CONFIG.font.lineGap);
         }
+
         if (kcal) {
           const [kx, ky] = blockCfg.kcalPos;
           ctx.fillStyle = CONFIG.render.textColor;
@@ -734,16 +960,22 @@
           ctx.fillText(`${kcal} ${CONFIG.render.kcalSuffix}`, kx, ky);
         }
       }
+
       ctx.fillStyle = CONFIG.totalKcal.color;
       ctx.font = `${CONFIG.font.weight} ${CONFIG.font.totalFontSize}px ${CONFIG.font.family}`;
       ctx.textBaseline = 'top';
       ctx.fillText(`${CONFIG.render.totalPrefix} ${totalKcal}`, CONFIG.totalKcal.pos[0], CONFIG.totalKcal.pos[1]);
+
       setStatus('Превью обновлено.');
     }
+
     async function downloadPng() {
       await renderPreview();
       previewCanvas.toBlob((blob) => {
-        if (!blob) { setStatus('Не удалось сформировать PNG.'); return; }
+        if (!blob) {
+          setStatus('Не удалось сформировать PNG.');
+          return;
+        }
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -755,34 +987,39 @@
         setStatus(`Файл ${CONFIG.image.outputName} отправлен на скачивание.`);
       }, 'image/png');
     }
+
     function resetForm() {
       Object.keys(state).forEach((name) => {
         if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
         state[name] = { kcal: '', text: '', file: null, objectUrl: '' };
       });
       buildForm();
-
-    const dayTitleInput = document.getElementById('dayTitleInput');
-    if (dayTitleInput) {
-      dayTitleInput.value = CONFIG.dayTitle.text || '';
-      dayTitleInput.addEventListener('input', () => {
-        CONFIG.dayTitle.text = dayTitleInput.value;
-      });
-    }
       renderPreview();
       setStatus('Поля очищены.');
     }
-    function openSettings() { settingsDrawer.classList.add('open'); settingsOverlay.classList.add('open'); }
-    function closeSettings() { settingsDrawer.classList.remove('open'); settingsOverlay.classList.remove('open'); }
+
+    function openSettings() {
+      settingsDrawer.classList.add('open');
+      settingsOverlay.classList.add('open');
+    }
+    function closeSettings() {
+      settingsDrawer.classList.remove('open');
+      settingsOverlay.classList.remove('open');
+    }
+
     function saveSettingsLocal() {
       readSettingsFromUI();
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(CONFIG));
       renderPreview();
       setStatus('Настройки сохранены в браузере.');
     }
+
     function loadSettingsLocal() {
       const raw = localStorage.getItem(SETTINGS_KEY);
-      if (!raw) { setStatus('Сохранённые настройки не найдены.'); return; }
+      if (!raw) {
+        setStatus('Сохранённые настройки не найдены.');
+        return;
+      }
       deepMerge(CONFIG, JSON.parse(JSON.stringify(DEFAULT_CONFIG)));
       deepMerge(CONFIG, JSON.parse(raw));
       fillGlobalSettings();
@@ -790,6 +1027,7 @@
       renderPreview();
       setStatus('Настройки загружены из браузера.');
     }
+
     function exportSettingsJson() {
       readSettingsFromUI();
       const blob = new Blob([JSON.stringify(CONFIG, null, 2)], { type: 'application/json' });
@@ -803,53 +1041,16 @@
       URL.revokeObjectURL(url);
       setStatus('JSON с настройками выгружен.');
     }
-    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
-      const root = document.documentElement;
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      document.querySelector('[data-theme-toggle]').textContent = next === 'dark' ? '☾' : '☀';
-    });
-    openSettingsBtn.addEventListener('click', openSettings);
-    closeSettingsBtn.addEventListener('click', closeSettings);
-    settingsOverlay.addEventListener('click', closeSettings);
-    previewBtn.addEventListener('click', renderPreview);
-    downloadBtn.addEventListener('click', downloadPng);
-    resetBtn.addEventListener('click', resetForm);
-    applySettingsBtn.addEventListener('click', () => { readSettingsFromUI(); renderPreview(); setStatus('Настройки применены.'); });
-    saveSettingsBtn.addEventListener('click', saveSettingsLocal);
-    loadSettingsBtn.addEventListener('click', loadSettingsLocal);
-    exportSettingsBtn.addEventListener('click', exportSettingsJson);
-    templateImage.onload = () => renderPreview();
-    templateImage.onerror = () => setStatus(`Не удалось загрузить ${CONFIG.image.templatePath}. Проверь путь в настройках.`);
-    buildForm();
 
-    const dayTitleInput = document.getElementById('dayTitleInput');
-    if (dayTitleInput) {
-      dayTitleInput.value = CONFIG.dayTitle.text || '';
-      dayTitleInput.addEventListener('input', () => {
-        CONFIG.dayTitle.text = dayTitleInput.value;
-      });
-    }
-    fillGlobalSettings();
-    const saved = localStorage.getItem(SETTINGS_KEY);
-    if (saved) {
-      try {
-        deepMerge(CONFIG, JSON.parse(JSON.stringify(DEFAULT_CONFIG)));
-        deepMerge(CONFIG, JSON.parse(saved));
-        fillGlobalSettings();
-      } catch (_) {}
-    }
-    updateTemplateSource();
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-  <script>
     async function downloadProjectZip() {
       try {
         const zip = new JSZip();
         const indexSource = document.documentElement.outerHTML;
         zip.file('index.html', indexSource);
-        const templatePath = (typeof CONFIG !== 'undefined' && CONFIG.image && CONFIG.image.templatePath) ? CONFIG.image.templatePath : './template.png';
+        const templatePath =
+          (typeof CONFIG !== 'undefined' && CONFIG.image && CONFIG.image.templatePath)
+            ? CONFIG.image.templatePath
+            : './template.png';
         const resp = await fetch(templatePath);
         if (!resp.ok) throw new Error('Не удалось загрузить шаблон: ' + templatePath);
         const blob = await resp.blob();
@@ -863,17 +1064,62 @@
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-        if (typeof setStatus === 'function') setStatus('Проект упакован в mad-marathon-project.zip');
+        setStatus('Проект упакован в mad-marathon-project.zip');
       } catch (err) {
         console.error(err);
         if (typeof setStatus === 'function') setStatus('Ошибка при сборке проекта: ' + err.message);
         else alert('Ошибка при сборке проекта: ' + err.message);
       }
     }
-    (function(){
-      const btn = document.getElementById('downloadProjectBtn');
-      if (btn) btn.addEventListener('click', downloadProjectZip);
-    })();
+
+    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      document.querySelector('[data-theme-toggle]').textContent = next === 'dark' ? '☾' : '☀';
+    });
+
+    openSettingsBtn.addEventListener('click', openSettings);
+    closeSettingsBtn.addEventListener('click', closeSettings);
+    settingsOverlay.addEventListener('click', closeSettings);
+    previewBtn.addEventListener('click', renderPreview);
+    downloadBtn.addEventListener('click', downloadPng);
+    resetBtn.addEventListener('click', resetForm);
+    applySettingsBtn.addEventListener('click', () => {
+      readSettingsFromUI();
+      renderPreview();
+      setStatus('Настройки применены.');
+    });
+    saveSettingsBtn.addEventListener('click', saveSettingsLocal);
+    loadSettingsBtn.addEventListener('click', loadSettingsLocal);
+    exportSettingsBtn.addEventListener('click', exportSettingsJson);
+    if (downloadProjectBtn) downloadProjectBtn.addEventListener('click', downloadProjectZip);
+
+    templateImage.onload = () => renderPreview();
+    templateImage.onerror = () =>
+      setStatus(`Не удалось загрузить ${CONFIG.image.templatePath}. Проверь путь в настройках.`);
+
+    buildForm();
+
+    const dayTitleInput = document.getElementById('dayTitleInput');
+    if (dayTitleInput) {
+      dayTitleInput.value = CONFIG.dayTitle.text || '';
+      dayTitleInput.addEventListener('input', () => {
+        CONFIG.dayTitle.text = dayTitleInput.value;
+        renderPreview();
+      });
+    }
+
+    fillGlobalSettings();
+    const saved = localStorage.getItem(SETTINGS_KEY);
+    if (saved) {
+      try {
+        deepMerge(CONFIG, JSON.parse(JSON.stringify(DEFAULT_CONFIG)));
+        deepMerge(CONFIG, JSON.parse(saved));
+        fillGlobalSettings();
+      } catch (_) {}
+    }
+    updateTemplateSource();
   </script>
 </body>
 </html>
