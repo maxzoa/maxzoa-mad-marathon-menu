@@ -109,7 +109,7 @@
         </div>
         <div class="meta">
           <span>Файл: menu_output.png</span>
-          <span>Шаблон: template.jpg</span>
+          <span>Шаблон: template.png</span>
           <span>Режим: полностью в браузере</span>
         </div>
       </section>
@@ -118,7 +118,7 @@
 
   <script>
     const CONFIG = {
-      image: { templatePath: './template.jpg', outputName: 'menu_output.png', size: [300, 300] },
+      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [300, 300] },
       font: { sizeText: 18, sizeKcal: 26, totalFontSize: 34 },
       blocks: {
         'Завтрак': { imageCenter: [170, 400], textBox: [340, 300, 990, 500], kcalPos: [50, 290] },
@@ -268,7 +268,7 @@
 
     async function renderPreview() {
       if (!templateImage.complete) {
-        setStatus('Жду загрузку template.jpg...');
+        setStatus('Жду загрузку template.png...');
         return;
       }
 
@@ -365,7 +365,7 @@
     downloadBtn.addEventListener('click', downloadPng);
     resetBtn.addEventListener('click', resetForm);
     templateImage.onload = () => { renderPreview(); };
-    templateImage.onerror = () => setStatus('Не удалось загрузить template.jpg. Положи HTML рядом с шаблоном.');
+    templateImage.onerror = () => setStatus('Не удалось загрузить template.png. Положи HTML рядом с шаблоном.');
 
     buildForm();
   </script>
