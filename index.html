@@ -1823,9 +1823,6 @@
 	// ── Патчим downloadPng чтобы сохранял в историю ───────────
 	const _origDownloadPng = downloadPng;
 	// вместо патча вешаем на кнопку сохранения
-	downloadBtn.addEventListener('click', () => {
-	  saveCurrentToHistory();
-	}, true); // capture — до основного обработчика
 	
 		// ── История меню ──────────────────────────────────────────
 	const HISTORY_KEY = 'mad-marathon-menu-history-v1';
