@@ -87,7 +87,7 @@
       flex: 0 0 auto;
     }
 	.brand-logo {
-	  height: clamp(80px, 10vw, 120px);
+	  height: clamp(60px, 1vw, 80px);
 	  width: auto;
 	  display: block;
 	  object-fit: contain;
@@ -1032,12 +1032,11 @@
         textField.innerHTML = '<label>Описание / рецепт</label>';
         const textArea = document.createElement('textarea');
         textArea.placeholder = 'Введи описание блюда';
-        textArea.addEventListener('input', () => {
+		let textDebounce;
+		textArea.addEventListener('input', () => {
 		  state[name].text = textArea.value;
-		});
-		textArea.addEventListener('blur', () => {
-		  state[name].text = textArea.value;
-		  renderPreview();
+		  clearTimeout(textDebounce);
+		  textDebounce = setTimeout(() => renderPreview(), 400);
 		});
         textField.append(textArea);
 
