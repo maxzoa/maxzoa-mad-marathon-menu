@@ -1075,10 +1075,49 @@
     const previewCanvas = document.getElementById('previewCanvas');
     const ctx = previewCanvas.getContext('2d');
     const statusEl = document.getElementById('status');
-    const previewBtn = document.getElementById('previewBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+
+	downloadBtn.addEventListener('click', () => {
+	  // --- скачивание картинки (если у тебя уже есть — оставь своё)
+	  const link = document.createElement('a');
+	  link.download = CONFIG.image.outputName;
+	  link.href = previewCanvas.toDataURL('image/png');
+	  link.click();
+
+	  // --- сохранение в историю
+	  const history = JSON.parse(localStorage.getItem('menuHistory') || '[]');
+
+	  const newItem = {
+		date: CONFIG.dayTitle.text || 'Без даты',
+		state: JSON.parse(JSON.stringify(state)),
+		config: JSON.parse(JSON.stringify(CONFIG)),
+		createdAt: Date.now()
+	  };
+
+	  history.push(newItem);
+	  if (history.length > 15) {
+	    history.shift();
+	  }
+
+	  localStorage.setItem('menuHistory', JSON.stringify(history));
+
+	  console.log('Сохранено в историю:', newItem);
+
+  // если есть функция
+  if (typeof renderHistory === 'function') {
+    renderHistory();
+  }
+});
+	
     const resetBtn = document.getElementById('resetBtn');
     const openSettingsBtn = document.getElementById('openSettingsBtn');
+	const dayTitleInput = document.getElementById('dayTitleInput');
+
+	if (dayTitleInput) {
+	  dayTitleInput.addEventListener('input', () => {
+		CONFIG.dayTitle.text = dayTitleInput.value.trim();
+	  });
+	}
     const closeSettingsBtn = document.getElementById('closeSettingsBtn');
     const settingsDrawer = document.getElementById('settingsDrawer');
     const settingsOverlay = document.getElementById('settingsOverlay');
@@ -1088,6 +1127,48 @@
     const exportSettingsBtn = document.getElementById('exportSettingsBtn');
     const downloadProjectBtn = document.getElementById('downloadProjectBtn');
     const templateImage = new Image();
+	function compressImagePNG(file, maxSize = 500) {
+	  return new Promise((resolve) => {
+		const img = new Image();
+		const reader = new FileReader();
+
+		reader.onload = (e) => {
+		  img.src = e.target.result;
+		};
+
+		img.onload = () => {
+		  const canvas = document.createElement('canvas');
+		  const ctx = canvas.getContext('2d');
+
+		  let width = img.width;
+		  let height = img.height;
+
+		  const scale = Math.min(maxSize / width, maxSize / height);
+		  width = Math.round(width * scale);
+		  height = Math.round(height * scale);
+
+		  canvas.width = width;
+		  canvas.height = height;
+
+		  ctx.drawImage(img, 0, 0, width, height);
+
+		  // ВАЖНО: PNG (с прозрачностью)
+		  const base64 = canvas.toDataURL('image/png');
+
+		  resolve(base64);
+		};
+
+		reader.readAsDataURL(file);
+	  });
+	}
+	
+	templateImage.onload = () => {
+	  renderPreview();
+	};
+
+	templateImage.onerror = () => {
+	  setStatus('Ошибка загрузки template.png');
+	};
 
     function setStatus(text) { statusEl.textContent = text; }
 
@@ -1112,6 +1193,7 @@
     }
 
     function buildForm() {
+	  document.getElementById('dayTitleInput').value = CONFIG.dayTitle.text || '';
       blocksContainer.innerHTML = '';
       Object.keys(CONFIG.blocks).forEach((name) => {
         if (!state[name]) state[name] = { kcal: '', text: '', file: null, objectUrl: '', base64: '' };
@@ -1190,10 +1272,10 @@
 		  // конвертируем в base64 для истории
 		  if (file) {
 			const reader = new FileReader();
-			reader.onload = (e) => {
-			  state[name].base64 = e.target.result;
-			};
-			reader.readAsDataURL(file);
+			compressImagePNG(file).then((base64) => {
+			  state[name].base64 = base64;
+			});
+
 		  } else {
 			state[name].base64 = '';
 		  }
@@ -1460,7 +1542,6 @@
     function resetForm() {
 		  // очищаем dayTitle
 	  CONFIG.dayTitle.text = '';
-	  const dayTitleInput = document.getElementById('dayTitleInput');
 	  if (dayTitleInput) dayTitleInput.value = '';
 	  
       Object.keys(state).forEach((name) => {
@@ -1559,7 +1640,6 @@
     openSettingsBtn.addEventListener('click', openSettings);
     closeSettingsBtn.addEventListener('click', closeSettings);
     settingsOverlay.addEventListener('click', closeSettings);
-    if (previewBtn) previewBtn.addEventListener('click', renderPreview);
     downloadBtn.addEventListener('click', downloadPng);
     resetBtn.addEventListener('click', resetForm);
     applySettingsBtn.addEventListener('click', () => {
@@ -1578,7 +1658,6 @@
 
     buildForm();
 	
-	const dayTitleInput = document.getElementById('dayTitleInput');
 	if (dayTitleInput) {
 	  dayTitleInput.value = CONFIG.dayTitle.text || '';
 	  dayTitleInput.focus();
@@ -1916,6 +1995,10 @@
 		}
 	  });
 	}
+	updateTemplateSource();
+	buildForm();
+	fillGlobalSettings();
+	renderPreview();
   </script>
 
 
