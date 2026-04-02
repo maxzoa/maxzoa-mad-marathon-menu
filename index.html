@@ -1142,6 +1142,7 @@
         textField.innerHTML = '<label>Описание / рецепт</label>';
         const textArea = document.createElement('textarea');
         textArea.placeholder = 'Введи описание блюда';
+		textArea.value = state[name].text || ''; // ← ВОТ ЭТА СТРОКА
 		let textDebounce;
 		textArea.addEventListener('input', () => {
 		  state[name].text = textArea.value;
