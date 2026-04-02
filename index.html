@@ -214,12 +214,22 @@
       -webkit-appearance: none;
       margin: 0;
     }
+	
+	input[type="text"]:focus,
+	input[type="number"]:focus,
+	textarea:focus,
+	select:focus {
+	  border-color: var(--color-primary);
+	  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+	  outline: none;
+	}
 
     .file-row {
       display: flex;
       gap: var(--space-2);
       align-items: center;
       flex-wrap: wrap;
+	  min-width: 0;
     }
     .file-input {
       position: absolute;
@@ -240,10 +250,108 @@
       color: var(--color-text-muted);
       flex: 1 1 180px;
       min-width: 0;
+	  max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+	
+	.daytitle-wrap {
+	  position: relative;
+	  display: flex;
+	  align-items: center;
+	}
+	.daytitle-wrap input {
+	  flex: 1;
+	  padding-right: 2.8rem;
+	}
+	.cal-trigger {
+	  position: absolute;
+	  right: 0.5rem;
+	  background: none;
+	  border: none;
+	  color: var(--color-text-muted);
+	  cursor: pointer;
+	  padding: 0.3rem;
+	  border-radius: var(--radius-sm);
+	  display: flex;
+	  align-items: center;
+	  transition: color var(--transition-interactive);
+	}
+	.cal-trigger:hover { color: var(--color-primary); }
+
+	.cal-popup {
+	  position: absolute;
+	  top: calc(100% + 6px);
+	  right: 0;
+	  z-index: 100;
+	  background: var(--color-surface);
+	  border: 1px solid var(--color-border);
+	  border-radius: var(--radius-lg);
+	  box-shadow: var(--shadow-md);
+	  padding: 1rem;
+	  min-width: 280px;
+	  user-select: none;
+	  opacity: 0;
+	  pointer-events: none;
+	  transform: translateY(-6px);
+	  transition: opacity 180ms ease, transform 180ms ease;
+	}
+	.cal-popup.open {
+	  opacity: 1;
+	  pointer-events: auto;
+	  transform: translateY(0);
+	}
+
+	.cal-header {
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  margin-bottom: 0.75rem;
+	}
+	.cal-header span {
+	  font-weight: 600;
+	  font-size: var(--text-sm);
+	  color: var(--color-text);
+	}
+	.cal-nav {
+	  background: none;
+	  border: none;
+	  color: var(--color-text-muted);
+	  cursor: pointer;
+	  padding: 0.25rem 0.5rem;
+	  border-radius: var(--radius-sm);
+	  font-size: 1rem;
+	  transition: color var(--transition-interactive), background var(--transition-interactive);
+	}
+	.cal-nav:hover { color: var(--color-primary); background: var(--color-surface-2); }
+
+	.cal-grid {
+	  display: grid;
+	  grid-template-columns: repeat(7, 1fr);
+	  gap: 2px;
+	}
+	.cal-dow {
+	  text-align: center;
+	  font-size: 0.7rem;
+	  color: var(--color-text-muted);
+	  padding: 0.25rem 0;
+	  font-weight: 600;
+	}
+	.cal-day {
+	  text-align: center;
+	  padding: 0.35rem 0.2rem;
+	  border-radius: var(--radius-sm);
+	  font-size: var(--text-sm);
+	  cursor: pointer;
+	  color: var(--color-text);
+	  transition: background var(--transition-interactive), color var(--transition-interactive);
+	}
+	.cal-day:hover { background: var(--color-surface-2); color: var(--color-primary); }
+	.cal-day.today { color: var(--color-primary); font-weight: 700; }
+	.cal-day.selected { background: var(--color-primary); color: #fff; }
+	.cal-day.other-month { color: var(--color-text-muted); opacity: 0.4; }
+	.cal-day.empty { cursor: default; }
 
     .actions {
       display: grid;
@@ -404,9 +512,13 @@
         <h2 id="form-title">Поля меню</h2>
 
         <div class="field">
-          <label for="dayTitleInput">Текст даты (например: «Понедельник 6 апреля»)</label>
-          <input id="dayTitleInput" type="text" placeholder="Понедельник 6 апреля">
-        </div>
+		  <abel for="dayTitleInput">Дата меню (например: «Понедельник 6 апреля»)</label>
+		  <div class="daytitle-wrap">
+			<input id="dayTitleInput" type="text" placeholder="Понедельник, 6 апреля" />
+			<button type="button" class="cal-trigger" id="calTrigger" title="Выбрать дату"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button>
+			<div class="cal-popup" id="calPopup"></div>
+		  </div>
+		</div>
 
         <div id="blocksContainer"><section class="block-card"><h3>Завтрак</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Завтрак"><label class="file-picker-btn" for="file-Завтрак">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Обед</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Обед"><label class="file-picker-btn" for="file-Обед">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Ужин</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Ужин"><label class="file-picker-btn" for="file-Ужин">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Перекус</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Перекус"><label class="file-picker-btn" for="file-Перекус">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Дополнительно</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Дополнительно"><label class="file-picker-btn" for="file-Дополнительно">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section></div>
 
@@ -1346,18 +1458,15 @@
       setStatus(`Не удалось загрузить ${CONFIG.image.templatePath}. Проверь путь в настройках.`);
 
     buildForm();
-
+	
 	const dayTitleInput = document.getElementById('dayTitleInput');
 	if (dayTitleInput) {
 	  dayTitleInput.value = CONFIG.dayTitle.text || '';
+	  dayTitleInput.focus();
 	  dayTitleInput.addEventListener('input', () => {
 		CONFIG.dayTitle.text = dayTitleInput.value;
-		CONFIG.image.outputName = dayTitleInput.value
-		  ? `${dayTitleInput.value}.png`
-		  : 'menu_output.png';
-		document.title = dayTitleInput.value
-		  ? `${dayTitleInput.value} — mad-marathon`
-		  : 'mad-marathon-menu-builder';
+		CONFIG.image.outputName = dayTitleInput.value ? `${dayTitleInput.value}.png` : 'menu_output.png';
+		document.title = dayTitleInput.value ? `${dayTitleInput.value} — mad-marathon` : 'mad-marathon-menu-builder';
 		renderPreview();
 	  });
 	}
@@ -1372,6 +1481,100 @@
       } catch (_) {}
     }
     updateTemplateSource();
+	
+	
+	(function () {
+	  const DAYS_RU = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+	  const MONTHS_RU = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+	  const MONTHS_NAMES = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+	  const DOW = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+
+	  const trigger = document.getElementById('calTrigger');
+	  const popup = document.getElementById('calPopup');
+	  const input = document.getElementById('dayTitleInput');
+	  if (!trigger || !popup || !input) return;
+
+	  const now = new Date();
+	  let viewYear = now.getFullYear();
+	  let viewMonth = now.getMonth();
+	  let selectedDate = null;
+
+	  function formatDate(d) {
+		const dow = DAYS_RU[d.getDay()];
+		const day = d.getDate();
+		const mon = MONTHS_RU[d.getMonth()];
+		return `${dow}, ${day} ${mon}`;
+	  }
+
+	  function renderCal() {
+		const firstDay = new Date(viewYear, viewMonth, 1);
+		const lastDay = new Date(viewYear, viewMonth + 1, 0);
+
+		let startDow = firstDay.getDay();
+		startDow = startDow === 0 ? 6 : startDow - 1;
+
+		popup.innerHTML = `
+		  <div class="cal-header">
+			<button class="cal-nav" id="calPrev">&#8249;</button>
+			<span>${MONTHS_NAMES[viewMonth]} ${viewYear}</span>
+			<button class="cal-nav" id="calNext">&#8250;</button>
+		  </div>
+		  <div class="cal-grid">
+			${DOW.map(d => `<div class="cal-dow">${d}</div>`).join('')}
+			${Array(startDow).fill('<div class="cal-day empty"></div>').join('')}
+			${Array.from({length: lastDay.getDate()}, (_, i) => {
+			  const d = i + 1;
+			  const date = new Date(viewYear, viewMonth, d);
+			  const isToday = date.toDateString() === now.toDateString();
+			  const isSel = selectedDate && date.toDateString() === selectedDate.toDateString();
+			  return `<div class="cal-day${isToday ? ' today' : ''}${isSel ? ' selected' : ''}" data-d="${d}">${d}</div>`;
+			}).join('')}
+		  </div>
+		`;
+
+		document.getElementById('calPrev').addEventListener('click', (e) => {
+		  e.stopPropagation();
+		  viewMonth--;
+		  if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+		  renderCal();
+		});
+
+		document.getElementById('calNext').addEventListener('click', (e) => {
+		  e.stopPropagation();
+		  viewMonth++;
+		  if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+		  renderCal();
+		});
+
+		popup.querySelectorAll('.cal-day[data-d]').forEach(el => {
+		  el.addEventListener('click', (e) => {
+			e.stopPropagation();
+			const d = Number(el.dataset.d);
+			selectedDate = new Date(viewYear, viewMonth, d);
+			const formatted = formatDate(selectedDate);
+			input.value = formatted;
+			CONFIG.dayTitle.text = formatted;
+			CONFIG.image.outputName = `${formatted}.png`;
+			document.title = `${formatted} — mad-marathon`;
+			popup.classList.remove('open');
+			renderPreview();
+		  });
+		});
+	  }
+
+	  trigger.addEventListener('click', (e) => {
+		e.stopPropagation();
+		popup.classList.toggle('open');
+		if (popup.classList.contains('open')) renderCal();
+	  });
+
+	  document.addEventListener('click', (e) => {
+		if (!popup.contains(e.target) && e.target !== trigger) {
+		  popup.classList.remove('open');
+		}
+	  });
+	})();
+	
   </script>
 
 
