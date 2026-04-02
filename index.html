@@ -1520,24 +1520,6 @@
       setStatus('Превью обновлено.');
     }
 
-    async function downloadPng() {
-      await renderPreview();
-      previewCanvas.toBlob((blob) => {
-        if (!blob) {
-          setStatus('Не удалось сформировать PNG.');
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = CONFIG.image.outputName;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        setStatus(`Файл ${CONFIG.image.outputName} отправлен на скачивание.`);
-      }, 'image/png');
-    }
 
     function resetForm() {
 		  // очищаем dayTitle
@@ -1646,7 +1628,6 @@
     openSettingsBtn.addEventListener('click', openSettings);
     closeSettingsBtn.addEventListener('click', closeSettings);
     settingsOverlay.addEventListener('click', closeSettings);
-    downloadBtn.addEventListener('click', downloadPng);
     resetBtn.addEventListener('click', resetForm);
     applySettingsBtn.addEventListener('click', () => {
       readSettingsFromUI();
