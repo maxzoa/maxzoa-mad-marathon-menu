@@ -1609,6 +1609,12 @@
         const resp = await fetch(templatePath);
         if (!resp.ok) throw new Error('Не удалось загрузить шаблон: ' + templatePath);
         const blob = await resp.blob();
+		const logoResp = await fetch('./logo.png');
+			if (logoResp.ok) {
+			  const logoBlob = await logoResp.blob();
+			  zip.file('logo.png', logoBlob);
+			}
+
         zip.file('template.png', blob);
         const content = await zip.generateAsync({ type: 'blob' });
         const url = URL.createObjectURL(content);
