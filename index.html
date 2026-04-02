@@ -86,6 +86,12 @@
       color: var(--color-primary);
       flex: 0 0 auto;
     }
+	.brand-logo {
+	  height: clamp(80px, 10vw, 120px);
+	  width: auto;
+	  display: block;
+	  object-fit: contain;
+	}
     .brand h1 {
       margin: 0;
       font-size: clamp(2rem, 1.45rem + 2.1vw, 3.25rem);
@@ -302,6 +308,13 @@
       margin-top: var(--space-2);
       max-width: 62ch;
     }
+	
+	.icon-btn {
+	  min-height: 36px;
+	  min-width: 36px;
+	  padding: 0.5rem;
+	  border-radius: var(--radius-md);
+}
 
     .settings-body {
       padding: var(--space-4);
@@ -369,22 +382,21 @@
 <body>
   <div class="page">
     <header class="topbar">
-      <div class="brand">
-        <svg class="brand-mark" aria-label="Mad marathon logo" viewBox="0 0 64 64" fill="none">
-          <ellipse cx="32" cy="32" rx="24" ry="14" stroke="currentColor" stroke-width="3"></ellipse>
-          <ellipse cx="32" cy="32" rx="12" ry="28" stroke="currentColor" stroke-width="2" opacity="0.55"></ellipse>
-          <circle cx="32" cy="32" r="3.5" fill="currentColor"></circle>
-        </svg>
-        <div>
-          <h1>Mad marathon</h1>
-          <p>Охуенный браузерный конструктор меню</p>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="top-btn" id="openSettingsBtn" type="button">Настройки</button>
-        <button class="top-btn" id="downloadProjectBtn" type="button">Скачать проект</button>
-        <button class="theme-toggle" type="button" data-theme-toggle="" aria-label="Переключить тему">☾</button>
-      </div>
+		<div class="brand">
+		  <img src="./logo.png" alt="Mad Marathon" class="brand-logo" />
+		</div>
+		<div class="top-actions">
+		  <button class="top-btn icon-btn" id="openSettingsBtn" type="button" title="Настройки">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			  ircle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+			</svg>
+		  </button>
+		  <button class="top-btn icon-btn" id="downloadProjectBtn" type="button" title="Скачать проект">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/>e x1="12" y1="15" x2="12" y2="3"/>
+			</svg>
+		  </button>
+		</div>
     </header>
 
     <main class="app-shell">
@@ -398,11 +410,7 @@
 
         <div id="blocksContainer"><section class="block-card"><h3>Завтрак</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Завтрак"><label class="file-picker-btn" for="file-Завтрак">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Обед</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Обед"><label class="file-picker-btn" for="file-Обед">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Ужин</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Ужин"><label class="file-picker-btn" for="file-Ужин">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Перекус</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Перекус"><label class="file-picker-btn" for="file-Перекус">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Дополнительно</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Дополнительно"><label class="file-picker-btn" for="file-Дополнительно">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section></div>
 
-        <div class="actions">
-          <button class="primary-btn" id="downloadBtn" type="button">Сохранить меню</button>
-          <button class="ghost-btn" id="previewBtn" type="button">Обновить превью</button>
-          <button class="ghost-btn" id="resetBtn" type="button">Очистить поля</button>
-        </div>
+       
         <div class="status" id="status">Превью обновлено.</div>
       </section>
 
@@ -417,6 +425,10 @@
           <span id="metaTemplate">Шаблон: ./template.png</span>
           <span id="metaImageSize">Размер картинки: 200 × 200</span>
         </div>
+		<div class="actions">
+		  <button class="primary-btn" id="downloadBtn" type="button">Сохранить меню</button>
+		  <button class="ghost-btn" id="resetBtn" type="button">Очистить поля</button>
+		</div>
       </section>
     </main>
   </div>
@@ -428,7 +440,7 @@
       <div>
         <h2 id="settings-title">Настройки</h2>
         <p class="section-note">
-          Здесь вынесены почти все параметры: шаблон, файл выгрузки, размеры, шрифты, цвета, координаты блоков и подпись под логотипом.
+          Здесь вынесены почти все параметры: шаблон, файл выгрузки, размеры, шрифты, цвета, координаты блоков и даты меню.
         </p>
       </div>
       <button class="ghost-btn" id="closeSettingsBtn" type="button">Закрыть</button>
@@ -526,17 +538,17 @@
       </section>
 
       <section class="settings-group">
-        <h3>Подпись под логотипом</h3>
+        <h3>Дата меню</h3>
         <div class="field-grid two">
           <div class="field">
             <label for="setting-dayTitleX">Позиция X подписи</label>
             <input id="setting-dayTitleX" type="number">
-            <div class="field-help">Горизонтальная позиция строки дня под логотипом.</div>
+            <div class="field-help">Горизонтальная позиция Даты меню.</div>
           </div>
           <div class="field">
             <label for="setting-dayTitleY">Позиция Y подписи</label>
             <input id="setting-dayTitleY" type="number">
-            <div class="field-help">Вертикальная позиция строки дня под логотипом.</div>
+            <div class="field-help">Вертикальная позиция Даты меню.</div>
           </div>
           <div class="field">
             <label for="setting-dayTitleFont">Размер шрифта подписи</label>
@@ -820,7 +832,7 @@
         totalPrefix: 'Общая калорийность на день:',
         kcalSuffix: 'ккал'
       },
-      dayTitle: { text: '', pos: [1610, 50], fontSize: 60 },
+      dayTitle: { text: '', pos: [1320, 50], fontSize: 60 },
       blocks: {
         'Завтрак': { imageCenter: [300, 700], textBox: [600, 580, 2400, 500], kcalPos: [50, 480] },
         'Обед': { imageCenter: [300, 1200], textBox: [600, 1085, 2400, 790], kcalPos: [50, 990] },
@@ -895,8 +907,12 @@
         kcalInput.placeholder = 'Например, 420';
         kcalInput.value = state[name].kcal || '';
         kcalInput.addEventListener('input', () => {
-          state[name].kcal = kcalInput.value.trim();
-        });
+		  state[name].kcal = kcalInput.value.trim();
+		});
+		kcalInput.addEventListener('blur', () => {
+		  state[name].kcal = kcalInput.value.trim();
+		  renderPreview();
+		});
         kcalField.append(kcalInput);
 
         const textField = document.createElement('div');
@@ -904,10 +920,13 @@
         textField.innerHTML = '<label>Описание / рецепт</label>';
         const textArea = document.createElement('textarea');
         textArea.placeholder = 'Введи описание блюда';
-        textArea.value = state[name].text || '';
         textArea.addEventListener('input', () => {
-          state[name].text = textArea.value;
-        });
+		  state[name].text = textArea.value;
+		});
+		textArea.addEventListener('blur', () => {
+		  state[name].text = textArea.value;
+		  renderPreview();
+		});
         textField.append(textArea);
 
         const fileField = document.createElement('div');
@@ -1140,7 +1159,7 @@
         ctx.fillStyle = CONFIG.render.textColor;
         ctx.font = `${CONFIG.font.weight} ${CONFIG.dayTitle.fontSize}px ${CONFIG.font.family}`;
         ctx.textBaseline = 'top';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'start';
         ctx.fillText(CONFIG.dayTitle.text, CONFIG.dayTitle.pos[0], CONFIG.dayTitle.pos[1]);
         ctx.textAlign = 'start';
       }
@@ -1296,17 +1315,20 @@
       }
     }
 
-    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
-      const root = document.documentElement;
-      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      document.querySelector('[data-theme-toggle]').textContent = next === 'dark' ? '☾' : '☀';
-    });
+	const themeToggleBtn = document.querySelector('[data-theme-toggle]');
+	if (themeToggleBtn) {
+	  themeToggleBtn.addEventListener('click', () => {
+		const root = document.documentElement;
+		const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		root.setAttribute('data-theme', next);
+		themeToggleBtn.textContent = next === 'dark' ? '☾' : '☀';
+	  });
+	}
 
     openSettingsBtn.addEventListener('click', openSettings);
     closeSettingsBtn.addEventListener('click', closeSettings);
     settingsOverlay.addEventListener('click', closeSettings);
-    previewBtn.addEventListener('click', renderPreview);
+    if (previewBtn) previewBtn.addEventListener('click', renderPreview);
     downloadBtn.addEventListener('click', downloadPng);
     resetBtn.addEventListener('click', resetForm);
     applySettingsBtn.addEventListener('click', () => {
