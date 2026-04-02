@@ -450,6 +450,99 @@
       transition: opacity var(--transition-interactive);
       z-index: 35;
     }
+	
+	.history-drawer {
+	  position: fixed;
+	  top: 0;
+	  right: 0;
+	  width: min(420px, 100vw);
+	  height: 100dvh;
+	  z-index: 40;
+	  border-radius: 0;
+	  border-left: 1px solid var(--color-border);
+	  background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+	  backdrop-filter: blur(12px);
+	  box-shadow: var(--shadow-md);
+	  transform: translateX(100%);
+	  transition: transform var(--transition-interactive);
+	  display: grid;
+	  grid-template-rows: auto 1fr auto;
+	}
+	.history-drawer.open { transform: translateX(0); }
+
+	.history-header {
+	  padding: var(--space-4);
+	  border-bottom: 1px solid var(--color-border);
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  gap: var(--space-3);
+	}
+	.history-header h2 {
+	  margin: 0;
+	  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.8rem);
+	}
+
+	.history-body {
+	  padding: var(--space-4);
+	  overflow-y: auto;
+	  min-height: 0;
+	}
+
+	.history-empty {
+	  color: var(--color-text-muted);
+	  font-size: var(--text-sm);
+	  text-align: center;
+	  padding: var(--space-8) 0;
+	}
+
+	.history-item {
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  gap: var(--space-3);
+	  padding: var(--space-3) var(--space-4);
+	  border: 1px solid var(--color-border);
+	  border-radius: var(--radius-lg);
+	  background: var(--color-surface-2);
+	  margin-bottom: var(--space-2);
+	  cursor: pointer;
+	  transition: background var(--transition-interactive), border-color var(--transition-interactive);
+	}
+	.history-item:hover { background: var(--color-surface); border-color: var(--color-primary); }
+
+	.history-item-info { min-width: 0; }
+	.history-item-date {
+	  font-weight: 600;
+	  font-size: var(--text-sm);
+	  color: var(--color-text);
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+	.history-item-meta {
+	  font-size: var(--text-xs);
+	  color: var(--color-text-muted);
+	  margin-top: 2px;
+	}
+
+	.history-item-del {
+	  background: none;
+	  border: none;
+	  color: var(--color-text-muted);
+	  cursor: pointer;
+	  padding: 0.3rem;
+	  border-radius: var(--radius-sm);
+	  flex: 0 0 auto;
+	  transition: color var(--transition-interactive);
+	}
+	.history-item-del:hover { color: #e06c6c; }
+
+	.history-footer {
+	  padding: var(--space-4);
+	  border-top: 1px solid var(--color-border);
+	}
+	
     .overlay.open { opacity: 1; pointer-events: auto; }
 
     @media (max-width: 1180px) {
@@ -496,14 +589,15 @@
 		<div class="top-actions">
 		  <button class="top-btn icon-btn" id="openSettingsBtn" type="button" title="Настройки">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			  ircle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+			  <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
 			</svg>
 		  </button>
 		  <button class="top-btn icon-btn" id="downloadProjectBtn" type="button" title="Скачать проект">
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/>e x1="12" y1="15" x2="12" y2="3"/>
+			  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
 			</svg>
-		  </button>
+			</button>
+			<button class="top-btn icon-btn" id="historyBtn" type="button" title="История меню"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 5v5l4 2"/></svg></button>
 		</div>
     </header>
 
@@ -512,7 +606,7 @@
         <h2 id="form-title">Поля меню</h2>
 
         <div class="field">
-		  <abel for="dayTitleInput">Дата меню (например: «Понедельник 6 апреля»)</label>
+		  <label for="dayTitleInput">Дата меню (например: «Понедельник 6 апреля»)</label>
 		  <div class="daytitle-wrap">
 			<input id="dayTitleInput" type="text" placeholder="Понедельник, 6 апреля" />
 			<button type="button" class="cal-trigger" id="calTrigger" title="Выбрать дату"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button>
@@ -546,6 +640,22 @@
   </div>
 
   <div class="overlay" id="settingsOverlay"></div>
+  
+  <div class="overlay" id="historyOverlay"></div>
+
+	<aside class="history-drawer" id="historyDrawer" aria-labelledby="history-title">
+	  <div class="history-header">
+		<h2 id="history-title">История меню</h2>
+		<button class="ghost-btn" id="closeHistoryBtn" type="button">Закрыть</button>
+	  </div>
+	  <div class="history-body" id="historyBody">
+		<div class="history-empty">История пуста.<br>Сохрани меню — оно появится здесь.</div>
+	  </div>
+	  <div class="history-footer" style="display:grid;gap:var(--space-2)">
+	  <button class="primary-btn" id="batchGenerateBtn" type="button" style="width:100%">Сгенерировать все меню в ZIP</button>
+	  <button class="ghost-btn" id="clearHistoryBtn" type="button" style="width:100%">Очистить всю историю</button>
+	</div>
+	</aside>
 
   <aside class="settings-drawer" id="settingsDrawer" aria-labelledby="settings-title">
     <div class="settings-header">
@@ -1004,7 +1114,7 @@
     function buildForm() {
       blocksContainer.innerHTML = '';
       Object.keys(CONFIG.blocks).forEach((name) => {
-        if (!state[name]) state[name] = { kcal: '', text: '', file: null, objectUrl: '' };
+        if (!state[name]) state[name] = { kcal: '', text: '', file: null, objectUrl: '', base64: '' };
 
         const card = document.createElement('section');
         card.className = 'block-card';
@@ -1069,24 +1179,33 @@
           fileNameChip.textContent = 'Файл не выбран';
           renderPreview();
         });
-        fileInput.addEventListener('change', () => {
-          const file = fileInput.files?.[0] || null;
-          if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
-          state[name].file = file;
-          state[name].objectUrl = file ? URL.createObjectURL(file) : '';
-          fileNameChip.textContent = file ? file.name : 'Файл не выбран';
-          renderPreview();
-        });
-        row.append(fileInput, pickerBtn, fileNameChip, clearBtn);
-        const note = document.createElement('div');
-        note.className = 'field-help';
-        note.textContent = 'Можно загрузить PNG, JPG, WEBP или BMP';
-        fileField.append(row, note);
+		fileInput.addEventListener('change', () => {
+		  const file = fileInput.files?.[0] || null;
+		  if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
+		  state[name].file = file;
+		  state[name].objectUrl = file ? URL.createObjectURL(file) : '';
+		  fileNameChip.textContent = file ? file.name : 'Файл не выбран';
 
-        card.append(kcalField, textField, fileField);
-        blocksContainer.append(card);
-      });
-    }
+		  // конвертируем в base64 для истории
+		  if (file) {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+			  state[name].base64 = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		  } else {
+			state[name].base64 = '';
+		  }
+
+		  renderPreview();
+		});
+		row.append(fileInput, pickerBtn, fileNameChip, clearBtn);
+		fileField.append(row);
+
+		card.append(kcalField, textField, fileField);
+		blocksContainer.append(card);
+		});
+		}
 
     function buildSettingsForm() {
       blockSettingsContainer.innerHTML = '';
@@ -1574,6 +1693,228 @@
 	  });
 	})();
 	
+	
+
+	function renderHistoryList() {
+	  const list = loadHistory();
+	  if (!list.length) {
+		historyBody.innerHTML = '<div class="history-empty">История пуста.<br>Сохрани меню — оно появится здесь.</div>';
+		return;
+	  }
+
+	  historyBody.innerHTML = '';
+	  list.forEach(entry => {
+		const item = document.createElement('div');
+		item.className = 'history-item';
+
+		// считаем общие ккал
+		const totalKcal = Object.values(entry.blocks)
+		  .reduce((sum, b) => sum + (parseInt(b.kcal) || 0), 0);
+
+		item.innerHTML = `
+		  <div class="history-item-info">
+			<div class="history-item-date">${entry.title}</div>
+			<div class="history-item-meta">${entry.savedAt} · ${totalKcal} ккал</div>
+		  </div>
+		  <button class="history-item-del" title="Удалить" data-id="${entry.id}">
+			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+		  </button>
+		`;
+
+		// клик на саму карточку — загрузить
+		item.addEventListener('click', (e) => {
+		  if (e.target.closest('.history-item-del')) return;
+		  loadEntryFromHistory(entry);
+		});
+
+		// клик на крестик — удалить
+		item.querySelector('.history-item-del').addEventListener('click', (e) => {
+		  e.stopPropagation();
+		  let list = loadHistory();
+		  list = list.filter(x => x.id !== entry.id);
+		  saveHistory(list);
+		  renderHistoryList();
+		});
+
+		historyBody.appendChild(item);
+	  });
+	}
+
+	// ── Патчим downloadPng чтобы сохранял в историю ───────────
+	const _origDownloadPng = downloadPng;
+	// вместо патча вешаем на кнопку сохранения
+	downloadBtn.addEventListener('click', () => {
+	  saveCurrentToHistory();
+	}, true); // capture — до основного обработчика
+	
+		// ── История меню ──────────────────────────────────────────
+	const HISTORY_KEY = 'mad-marathon-menu-history-v1';
+	const HISTORY_MAX = 14;
+	
+	var loadHistory = function() {
+	  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; }
+	}
+
+	function saveHistory(list) {
+	  localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+	}
+
+	const historyBtn = document.getElementById('historyBtn');
+	const historyDrawer = document.getElementById('historyDrawer');
+	const historyOverlay = document.getElementById('historyOverlay');
+	const closeHistoryBtn = document.getElementById('closeHistoryBtn');
+	const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+	const historyBody = document.getElementById('historyBody');
+
+	function openHistory() {
+	  renderHistoryList();
+	  historyDrawer.classList.add('open');
+	  historyOverlay.classList.add('open');
+	}
+	function closeHistory() {
+	  historyDrawer.classList.remove('open');
+	  historyOverlay.classList.remove('open');
+	}
+
+	historyBtn.addEventListener('click', openHistory);
+	closeHistoryBtn.addEventListener('click', closeHistory);
+	historyOverlay.addEventListener('click', closeHistory);
+
+	clearHistoryBtn.addEventListener('click', () => {
+	  if (!confirm('Удалить всю историю меню?')) return;
+	  localStorage.removeItem(HISTORY_KEY);
+	  renderHistoryList();
+	  setStatus('История очищена.');
+	});
+
+
+	function saveCurrentToHistory() {
+	  const title = CONFIG.dayTitle.text || 'Без названия';
+	  const blocks = {};
+	  Object.keys(state).forEach(name => {
+		blocks[name] = {
+		  kcal: state[name].kcal || '',
+		  text: state[name].text || '',
+		  base64: state[name].base64 || ''
+		};
+	  });
+
+	  const entry = {
+		id: Date.now(),
+		title,
+		savedAt: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+		blocks
+	  };
+
+	  let list = loadHistory();
+	  list = list.filter(e => e.title !== title);
+	  list.unshift(entry);
+	  if (list.length > HISTORY_MAX) list = list.slice(0, HISTORY_MAX);
+	  saveHistory(list);
+	}
+
+	function loadEntryFromHistory(entry) {
+	  CONFIG.dayTitle.text = entry.title;
+	  const dti = document.getElementById('dayTitleInput');
+	  if (dti) {
+		dti.value = entry.title;
+		CONFIG.image.outputName = entry.title ? `${entry.title}.png` : 'menu_output.png';
+		document.title = entry.title ? `${entry.title} — mad-marathon` : 'mad-marathon-menu-builder';
+	  }
+
+	  Object.keys(entry.blocks).forEach(name => {
+		if (state[name]) {
+		  state[name].kcal = entry.blocks[name].kcal || '';
+		  state[name].text = entry.blocks[name].text || '';
+		  state[name].base64 = entry.blocks[name].base64 || '';
+
+		  // восстанавливаем objectUrl из base64
+		  if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
+		  if (state[name].base64) {
+			const byteString = atob(state[name].base64.split(',')[1]);
+			const mimeString = state[name].base64.split(',')[0].split(':')[1].split(';')[0];
+			const ab = new ArrayBuffer(byteString.length);
+			const ia = new Uint8Array(ab);
+			for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+			const blob = new Blob([ab], { type: mimeString });
+			state[name].objectUrl = URL.createObjectURL(blob);
+			state[name].file = { name: `${name}.jpg` };
+		  } else {
+			state[name].objectUrl = '';
+			state[name].file = null;
+		  }
+		}
+	  });
+
+	  buildForm();
+	  renderPreview();
+	  closeHistory();
+	  setStatus(`Загружено: ${entry.title}`);
+	}
+	
+		const batchGenerateBtn = document.getElementById('batchGenerateBtn');
+	if (batchGenerateBtn) {
+	  batchGenerateBtn.addEventListener('click', async () => {
+		const list = loadHistory();
+		if (!list.length) { setStatus('История пуста — нечего генерировать.'); return; }
+		batchGenerateBtn.disabled = true;
+		batchGenerateBtn.textContent = 'Генерирую...';
+		try {
+		  const zip = new JSZip();
+		  const savedTitle = CONFIG.dayTitle.text;
+		  const savedState = {};
+		  Object.keys(state).forEach(name => { savedState[name] = { ...state[name] }; });
+		  for (const entry of list) {
+			CONFIG.dayTitle.text = entry.title;
+			for (const name of Object.keys(entry.blocks)) {
+			  if (!state[name]) continue;
+			  state[name].kcal = entry.blocks[name].kcal || '';
+			  state[name].text = entry.blocks[name].text || '';
+			  state[name].base64 = entry.blocks[name].base64 || '';
+			  if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
+			  if (state[name].base64) {
+				const byteString = atob(state[name].base64.split(',')[1]);
+				const mimeString = state[name].base64.split(',')[0].split(':')[1].split(';')[0];
+				const ab = new ArrayBuffer(byteString.length);
+				const ia = new Uint8Array(ab);
+				for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+				const blob = new Blob([ab], { type: mimeString });
+				state[name].objectUrl = URL.createObjectURL(blob);
+			  } else {
+				state[name].objectUrl = '';
+			  }
+			}
+			await renderPreview();
+			const pngBlob = await new Promise(resolve => previewCanvas.toBlob(resolve, 'image/png'));
+			if (pngBlob) zip.file(`${entry.title || 'menu_' + entry.id}.png`, pngBlob);
+			Object.keys(state).forEach(name => {
+			  if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
+			  state[name].objectUrl = '';
+			});
+		  }
+		  CONFIG.dayTitle.text = savedTitle;
+		  Object.keys(savedState).forEach(name => { state[name] = { ...savedState[name] }; });
+		  buildForm();
+		  renderPreview();
+		  const content = await zip.generateAsync({ type: 'blob' });
+		  const url = URL.createObjectURL(content);
+		  const a = document.createElement('a');
+		  a.href = url;
+		  a.download = 'mad-marathon-menus.zip';
+		  document.body.appendChild(a);
+		  a.click();
+		  a.remove();
+		  URL.revokeObjectURL(url);
+		  setStatus(`Сгенерировано ${list.length} меню в архив.`);
+		} catch (err) {
+		  console.error(err);
+		  setStatus('Ошибка: ' + err.message);
+		} finally {
+		  batchGenerateBtn.disabled = false;
+		  batchGenerateBtn.textContent = 'Сгенерировать все меню в ZIP';
+		}
+	  });
+	}
   </script>
 
 
