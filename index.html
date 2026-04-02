@@ -1,8 +1,6 @@
-<!doctype html>
-<html lang="ru" data-theme="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="ru" data-theme="dark"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mad-marathon-menu-builder</title>
   <style>
     :root, [data-theme="light"] {
@@ -385,7 +383,7 @@
       <div class="top-actions">
         <button class="top-btn" id="openSettingsBtn" type="button">Настройки</button>
         <button class="top-btn" id="downloadProjectBtn" type="button">Скачать проект</button>
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">☾</button>
+        <button class="theme-toggle" type="button" data-theme-toggle="" aria-label="Переключить тему">☾</button>
       </div>
     </header>
 
@@ -394,18 +392,18 @@
         <h2 id="form-title">Поля меню</h2>
 
         <div class="field">
-          <label for="dayTitleInput">Текст под логотипом (например: «Понедельник 6 апреля»)</label>
-          <input id="dayTitleInput" type="text" placeholder="Понедельник 6 апреля" />
+          <label for="dayTitleInput">Текст даты (например: «Понедельник 6 апреля»)</label>
+          <input id="dayTitleInput" type="text" placeholder="Понедельник 6 апреля">
         </div>
 
-        <div id="blocksContainer"></div>
+        <div id="blocksContainer"><section class="block-card"><h3>Завтрак</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Завтрак"><label class="file-picker-btn" for="file-Завтрак">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Обед</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Обед"><label class="file-picker-btn" for="file-Обед">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Ужин</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Ужин"><label class="file-picker-btn" for="file-Ужин">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Перекус</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Перекус"><label class="file-picker-btn" for="file-Перекус">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section><section class="block-card"><h3>Дополнительно</h3><div class="field"><label>Калории</label><input type="number" inputmode="numeric" placeholder="Например, 420"></div><div class="field"><label>Описание / рецепт</label><textarea placeholder="Введи описание блюда"></textarea></div><div class="field"><label>Картинка</label><div class="file-row"><input type="file" accept="image/*" class="file-input" id="file-Дополнительно"><label class="file-picker-btn" for="file-Дополнительно">Выбрать файл</label><div class="file-name-chip">Файл не выбран</div><button type="button" class="ghost-btn">Убрать</button></div><div class="field-help">Можно загрузить PNG, JPG, WEBP или BMP</div></div></section></div>
 
         <div class="actions">
           <button class="primary-btn" id="downloadBtn" type="button">Сохранить меню</button>
           <button class="ghost-btn" id="previewBtn" type="button">Обновить превью</button>
           <button class="ghost-btn" id="resetBtn" type="button">Очистить поля</button>
         </div>
-        <div class="status" id="status">Заполни блоки и нажми «Сохранить меню».</div>
+        <div class="status" id="status">Превью обновлено.</div>
       </section>
 
       <section class="preview-panel" aria-labelledby="preview-title">
@@ -416,8 +414,8 @@
         </div>
         <div class="meta">
           <span id="metaOutput">Файл: menu_output.png</span>
-          <span id="metaTemplate">Шаблон: template.png</span>
-          <span id="metaImageSize">Размер картинки: 150 × 150</span>
+          <span id="metaTemplate">Шаблон: ./template.png</span>
+          <span id="metaImageSize">Размер картинки: 200 × 200</span>
         </div>
       </section>
     </main>
@@ -442,12 +440,12 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-templatePath">Путь к шаблону изображения</label>
-            <input id="setting-templatePath" type="text" />
+            <input id="setting-templatePath" type="text">
             <div class="field-help">Например: ./template.png. Файл должен лежать рядом с index.html или по указанному пути.</div>
           </div>
           <div class="field">
             <label for="setting-outputName">Имя итогового файла</label>
-            <input id="setting-outputName" type="text" />
+            <input id="setting-outputName" type="text">
             <div class="field-help">Как будет называться PNG при скачивании.</div>
           </div>
         </div>
@@ -458,12 +456,12 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-imageWidth">Максимальная ширина картинки блюда</label>
-            <input id="setting-imageWidth" type="number" />
+            <input id="setting-imageWidth" type="number">
             <div class="field-help">Картинка будет уменьшаться так, чтобы влезть в эту ширину.</div>
           </div>
           <div class="field">
             <label for="setting-imageHeight">Максимальная высота картинки блюда</label>
-            <input id="setting-imageHeight" type="number" />
+            <input id="setting-imageHeight" type="number">
             <div class="field-help">Если картинка выше рамки, она уменьшится до этого значения.</div>
           </div>
         </div>
@@ -474,22 +472,22 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-sizeText">Размер шрифта описания блюда</label>
-            <input id="setting-sizeText" type="number" />
+            <input id="setting-sizeText" type="number">
             <div class="field-help">Используется для текста рецепта внутри карточки.</div>
           </div>
           <div class="field">
             <label for="setting-sizeKcal">Размер шрифта калорий</label>
-            <input id="setting-sizeKcal" type="number" />
+            <input id="setting-sizeKcal" type="number">
             <div class="field-help">Используется для строки вида «420 ккал».</div>
           </div>
           <div class="field">
             <label for="setting-totalFontSize">Размер шрифта общей калорийности</label>
-            <input id="setting-totalFontSize" type="number" />
+            <input id="setting-totalFontSize" type="number">
             <div class="field-help">Размер итоговой строки внизу шаблона.</div>
           </div>
           <div class="field">
             <label for="setting-lineGap">Дополнительный межстрочный отступ текста</label>
-            <input id="setting-lineGap" type="number" />
+            <input id="setting-lineGap" type="number">
             <div class="field-help">Чем больше значение, тем свободнее строки.</div>
           </div>
           <div class="field">
@@ -505,7 +503,7 @@
           </div>
           <div class="field">
             <label for="setting-fontFamily">Семейство шрифта canvas</label>
-            <input id="setting-fontFamily" type="text" />
+            <input id="setting-fontFamily" type="text">
             <div class="field-help">Например: Segoe UI, Arial, sans-serif.</div>
           </div>
         </div>
@@ -516,12 +514,12 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-textColor">Цвет описания и калорий</label>
-            <input id="setting-textColor" type="text" />
+            <input id="setting-textColor" type="text">
             <div class="field-help">rgba(...), #RRGGBB или css-цвет.</div>
           </div>
           <div class="field">
             <label for="setting-totalColor">Цвет итоговой строки калорийности</label>
-            <input id="setting-totalColor" type="text" />
+            <input id="setting-totalColor" type="text">
             <div class="field-help">Отдельный цвет для нижней строки.</div>
           </div>
         </div>
@@ -532,17 +530,17 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-dayTitleX">Позиция X подписи</label>
-            <input id="setting-dayTitleX" type="number" />
+            <input id="setting-dayTitleX" type="number">
             <div class="field-help">Горизонтальная позиция строки дня под логотипом.</div>
           </div>
           <div class="field">
             <label for="setting-dayTitleY">Позиция Y подписи</label>
-            <input id="setting-dayTitleY" type="number" />
+            <input id="setting-dayTitleY" type="number">
             <div class="field-help">Вертикальная позиция строки дня под логотипом.</div>
           </div>
           <div class="field">
             <label for="setting-dayTitleFont">Размер шрифта подписи</label>
-            <input id="setting-dayTitleFont" type="number" />
+            <input id="setting-dayTitleFont" type="number">
             <div class="field-help">Размер текста, например 30.</div>
           </div>
         </div>
@@ -553,28 +551,248 @@
         <div class="field-grid two">
           <div class="field">
             <label for="setting-totalX">Позиция X итоговой строки</label>
-            <input id="setting-totalX" type="number" />
+            <input id="setting-totalX" type="number">
             <div class="field-help">Горизонтальное смещение текста внизу шаблона.</div>
           </div>
           <div class="field">
             <label for="setting-totalY">Позиция Y итоговой строки</label>
-            <input id="setting-totalY" type="number" />
+            <input id="setting-totalY" type="number">
             <div class="field-help">Вертикальная позиция итоговой строки.</div>
           </div>
           <div class="field">
             <label for="setting-totalPrefix">Текст перед числом общей калорийности</label>
-            <input id="setting-totalPrefix" type="text" />
-            <div class="field-help">Например: «Общее количество ккал на день:».</div>
+            <input id="setting-totalPrefix" type="text">
+            <div class="field-help">Например: «Общая калорийность на день:».</div>
           </div>
           <div class="field">
             <label for="setting-kcalSuffix">Текст после калорий в блоке</label>
-            <input id="setting-kcalSuffix" type="text" />
+            <input id="setting-kcalSuffix" type="text">
             <div class="field-help">Например: «ккал».</div>
           </div>
         </div>
       </section>
 
-      <div id="blockSettingsContainer"></div>
+      <div id="blockSettingsContainer"><section class="settings-group">
+          <h3>Завтрак</h3>
+          <div class="field-grid two">
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.Завтрак.imageCenter.0" value="170">
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.Завтрак.imageCenter.1" value="400">
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.Завтрак.textBox.0" value="340">
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.Завтрак.textBox.1" value="300">
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.Завтрак.textBox.2" value="1000">
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.Завтрак.textBox.3" value="500">
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.Завтрак.kcalPos.0" value="50">
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.Завтрак.kcalPos.1" value="290">
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
+          </div>
+        </section><section class="settings-group">
+          <h3>Обед</h3>
+          <div class="field-grid two">
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.Обед.imageCenter.0" value="170">
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.Обед.imageCenter.1" value="651">
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.Обед.textBox.0" value="340">
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.Обед.textBox.1" value="585">
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.Обед.textBox.2" value="1000">
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.Обед.textBox.3" value="790">
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.Обед.kcalPos.0" value="50">
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.Обед.kcalPos.1" value="575">
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
+          </div>
+        </section><section class="settings-group">
+          <h3>Ужин</h3>
+          <div class="field-grid two">
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.Ужин.imageCenter.0" value="170">
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.Ужин.imageCenter.1" value="891">
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.Ужин.textBox.0" value="340">
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.Ужин.textBox.1" value="830">
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.Ужин.textBox.2" value="1000">
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.Ужин.textBox.3" value="1030">
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.Ужин.kcalPos.0" value="50">
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.Ужин.kcalPos.1" value="815">
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
+          </div>
+        </section><section class="settings-group">
+          <h3>Перекус</h3>
+          <div class="field-grid two">
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.Перекус.imageCenter.0" value="170">
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.Перекус.imageCenter.1" value="1131">
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.Перекус.textBox.0" value="340">
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.Перекус.textBox.1" value="1073">
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.Перекус.textBox.2" value="1000">
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.Перекус.textBox.3" value="1210">
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.Перекус.kcalPos.0" value="50">
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.Перекус.kcalPos.1" value="1053">
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
+          </div>
+        </section><section class="settings-group">
+          <h3>Дополнительно</h3>
+          <div class="field-grid two">
+            <div class="field">
+              <label>X центра картинки</label>
+              <input type="number" data-path="blocks.Дополнительно.imageCenter.0" value="170">
+              <div class="field-help">Центр картинки по горизонтали.</div>
+            </div>
+            <div class="field">
+              <label>Y центра картинки</label>
+              <input type="number" data-path="blocks.Дополнительно.imageCenter.1" value="1400">
+              <div class="field-help">Центр картинки по вертикали.</div>
+            </div>
+            <div class="field">
+              <label>X начала текстового блока</label>
+              <input type="number" data-path="blocks.Дополнительно.textBox.0" value="340">
+              <div class="field-help">Левая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y начала текстового блока</label>
+              <input type="number" data-path="blocks.Дополнительно.textBox.1" value="1335">
+              <div class="field-help">Верхняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X конца текстового блока</label>
+              <input type="number" data-path="blocks.Дополнительно.textBox.2" value="1000">
+              <div class="field-help">Правая граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>Y конца текстового блока</label>
+              <input type="number" data-path="blocks.Дополнительно.textBox.3" value="1460">
+              <div class="field-help">Нижняя граница области текста.</div>
+            </div>
+            <div class="field">
+              <label>X позиции калорий</label>
+              <input type="number" data-path="blocks.Дополнительно.kcalPos.0" value="50">
+              <div class="field-help">Горизонтальная позиция строки калорий.</div>
+            </div>
+            <div class="field">
+              <label>Y позиции калорий</label>
+              <input type="number" data-path="blocks.Дополнительно.kcalPos.1" value="1310">
+              <div class="field-help">Вертикальная позиция строки калорий.</div>
+            </div>
+          </div>
+        </section></div>
     </div>
 
     <div class="settings-footer">
@@ -588,29 +806,30 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script>
     const DEFAULT_CONFIG = {
-      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [200, 200] },
+      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [500, 500] },
       font: {
-        sizeText: 18,
-        sizeKcal: 26,
-        totalFontSize: 34,
+        sizeText: 50,
+        sizeKcal: 60,
+        totalFontSize: 60,
         family: 'Segoe UI, sans-serif',
         weight: '700',
         lineGap: 8
       },
       render: {
-        textColor: 'rgba(79, 92, 148, 1)',
-        totalPrefix: 'Общее количество ккал на день:',
+        textColor: 'rgba(172, 144, 78, 255)',
+        totalPrefix: 'Общая калорийность на день:',
         kcalSuffix: 'ккал'
       },
-      dayTitle: { text: '', pos: [512, 20], fontSize: 30 },
+      dayTitle: { text: '', pos: [1610, 50], fontSize: 60 },
       blocks: {
-        'Завтрак': { imageCenter: [170, 400], textBox: [340, 300, 1000, 500], kcalPos: [50, 290] },
-        'Обед': { imageCenter: [170, 651], textBox: [340, 585, 1000, 790], kcalPos: [50, 575] },
-        'Ужин': { imageCenter: [170, 891], textBox: [340, 830, 1000, 1030], kcalPos: [50, 815] },
-        'Перекус': { imageCenter: [170, 1131], textBox: [340, 1073, 1000, 1210], kcalPos: [50, 1053] },
-        'Дополнительно': { imageCenter: [170, 1400], textBox: [340, 1335, 1000, 1460], kcalPos: [50, 1310] }
+        'Завтрак': { imageCenter: [300, 700], textBox: [600, 580, 2400, 500], kcalPos: [50, 480] },
+        'Обед': { imageCenter: [300, 1200], textBox: [600, 1085, 2400, 790], kcalPos: [50, 990] },
+        'Ужин': { imageCenter: [300, 1720], textBox: [600, 1600, 2400, 1020], kcalPos: [50, 1500] },
+        'Перекус': { imageCenter: [300, 2220], textBox: [600, 2100, 2400, 1210], kcalPos: [50, 2000] },
+		'Ночной дожор': { imageCenter: [300, 2730], textBox: [600, 2620, 2400, 1340], kcalPos: [50, 2500] },
+        'Дополнительно': { imageCenter: [300, 3260], textBox: [600, 3150, 2400, 1460], kcalPos: [50, 3010] }
       },
-      totalKcal: { pos: [55, 1495], color: 'rgba(79, 92, 148, 1)' }
+      totalKcal: { pos: [1320, 120], color: 'rgba(172, 144, 78, 255)' }
     };
 
     const SETTINGS_KEY = 'mad-marathon-menu-settings-v2';
@@ -842,7 +1061,7 @@
       CONFIG.totalKcal.color = document.getElementById('setting-totalColor').value.trim() || 'rgba(79, 92, 148, 1)';
       CONFIG.totalKcal.pos[0] = Number(document.getElementById('setting-totalX').value) || 55;
       CONFIG.totalKcal.pos[1] = Number(document.getElementById('setting-totalY').value) || 1490;
-      CONFIG.render.totalPrefix = document.getElementById('setting-totalPrefix').value.trim() || 'Общее количество ккал на день:';
+      CONFIG.render.totalPrefix = document.getElementById('setting-totalPrefix').value.trim() || 'Общая калорийность на день:';
       CONFIG.render.kcalSuffix = document.getElementById('setting-kcalSuffix').value.trim() || 'ккал';
       CONFIG.dayTitle.pos[0] = Number(document.getElementById('setting-dayTitleX').value) || CONFIG.dayTitle.pos[0];
       CONFIG.dayTitle.pos[1] = Number(document.getElementById('setting-dayTitleY').value) || CONFIG.dayTitle.pos[1];
@@ -989,6 +1208,11 @@
     }
 
     function resetForm() {
+		  // очищаем dayTitle
+	  CONFIG.dayTitle.text = '';
+	  const dayTitleInput = document.getElementById('dayTitleInput');
+	  if (dayTitleInput) dayTitleInput.value = '';
+	  
       Object.keys(state).forEach((name) => {
         if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
         state[name] = { kcal: '', text: '', file: null, objectUrl: '' };
@@ -1101,14 +1325,20 @@
 
     buildForm();
 
-    const dayTitleInput = document.getElementById('dayTitleInput');
-    if (dayTitleInput) {
-      dayTitleInput.value = CONFIG.dayTitle.text || '';
-      dayTitleInput.addEventListener('input', () => {
-        CONFIG.dayTitle.text = dayTitleInput.value;
-        renderPreview();
-      });
-    }
+	const dayTitleInput = document.getElementById('dayTitleInput');
+	if (dayTitleInput) {
+	  dayTitleInput.value = CONFIG.dayTitle.text || '';
+	  dayTitleInput.addEventListener('input', () => {
+		CONFIG.dayTitle.text = dayTitleInput.value;
+		CONFIG.image.outputName = dayTitleInput.value
+		  ? `${dayTitleInput.value}.png`
+		  : 'menu_output.png';
+		document.title = dayTitleInput.value
+		  ? `${dayTitleInput.value} — mad-marathon`
+		  : 'mad-marathon-menu-builder';
+		renderPreview();
+	  });
+	}
 
     fillGlobalSettings();
     const saved = localStorage.getItem(SETTINGS_KEY);
@@ -1121,5 +1351,6 @@
     }
     updateTemplateSource();
   </script>
-</body>
-</html>
+
+
+</body></html>
