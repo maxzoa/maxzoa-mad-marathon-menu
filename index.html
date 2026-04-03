@@ -604,6 +604,28 @@
     <main class="app-shell">
       <section class="panel" aria-labelledby="form-title">
         <h2 id="form-title">Поля меню</h2>
+		
+		<div class="field">
+		  <label>Тип меню</label>
+		  <div style="display:flex; gap:16px; align-items:center;">
+			
+			<label style="display:flex; gap:6px; align-items:center;">
+			  <input type="radio" name="menuType" value="default" checked>
+			  Обычное меню
+			</label>
+			
+			<label style="display:flex; gap:6px; align-items:center;">
+			  <input type="radio" name="menuType" value="dayx">
+			  День Х
+			</label>
+
+			<label style="display:flex; gap:6px; align-items:center;">
+			  <input type="radio" name="menuType" value="recipes">
+			  Для рецептов
+			</label>
+
+		  </div>
+		</div>
 
         <div class="field">
 		  <label for="dayTitleInput">Дата меню (например: «Понедельник 6 апреля»)</label>
@@ -1040,34 +1062,54 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script>
     const DEFAULT_CONFIG = {
-      image: { templatePath: './template.png', outputName: 'menu_output.png', size: [500, 500] },
-      font: {
-        sizeText: 50,
-        sizeKcal: 60,
-        totalFontSize: 60,
-        family: 'Segoe UI, sans-serif',
-        weight: '700',
-        lineGap: 8
-      },
-      render: {
-        textColor: 'rgba(172, 144, 78, 255)',
-        totalPrefix: 'Общая калорийность на день:',
-        kcalSuffix: 'ккал'
-      },
-      dayTitle: { text: '', pos: [1320, 50], fontSize: 60 },
-      blocks: {
-        'Завтрак': { imageCenter: [300, 700], textBox: [600, 580, 2400, 500], kcalPos: [50, 480] },
-        'Обед': { imageCenter: [300, 1200], textBox: [600, 1085, 2400, 790], kcalPos: [50, 990] },
-        'Ужин': { imageCenter: [300, 1720], textBox: [600, 1600, 2400, 1020], kcalPos: [50, 1500] },
-        'Перекус': { imageCenter: [300, 2220], textBox: [600, 2100, 2400, 1210], kcalPos: [50, 2000] },
+	  image: {
+		templatePath: './template.png',
+		templatePath2: './template2.png',
+		templatePath3: './template3.png',
+		outputName: 'menu_output.png',
+		size: [500, 500]
+	  },
+
+	  font: {
+		sizeText: 50,
+		sizeKcal: 60,
+		totalFontSize: 60,
+		family: 'Segoe UI, sans-serif',
+		weight: '700',
+		lineGap: 8
+	  },
+
+	  render: {
+		textColor: 'rgba(172, 144, 78, 255)',
+		totalPrefix: 'Общая калорийность на день:',
+		kcalSuffix: 'ккал'
+	  },
+
+	  dayTitle: {
+		text: '',
+		pos: [1320, 50],
+		fontSize: 60
+	  },
+
+	  blocks: {
+		'Завтрак': { imageCenter: [300, 700], textBox: [600, 580, 2400, 500], kcalPos: [50, 480] },
+		'Обед': { imageCenter: [300, 1200], textBox: [600, 1085, 2400, 790], kcalPos: [50, 990] },
+		'Ужин': { imageCenter: [300, 1720], textBox: [600, 1600, 2400, 1020], kcalPos: [50, 1500] },
+		'Перекус': { imageCenter: [300, 2220], textBox: [600, 2100, 2400, 1210], kcalPos: [50, 2000] },
 		'Ночной дожор': { imageCenter: [300, 2730], textBox: [600, 2620, 2400, 1340], kcalPos: [50, 2500] },
-        'Дополнительно': { imageCenter: [300, 3260], textBox: [600, 3150, 2400, 1460], kcalPos: [50, 3010] }
-      },
-      totalKcal: { pos: [1320, 120], color: 'rgba(172, 144, 78, 255)' }
-    };
+		'Дополнительно': { imageCenter: [300, 3260], textBox: [600, 3150, 2400, 1460], kcalPos: [50, 3010] }
+	  },
+
+	  totalKcal: {
+		pos: [1320, 120],
+		color: 'rgba(172, 144, 78, 255)'
+	  }
+	};
 
     const SETTINGS_KEY = 'mad-marathon-menu-settings-v2';
     const CONFIG = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+	let currentMenuType = 'default';
+	
     const state = {};
 
     const blocksContainer = document.getElementById('blocksContainer');
@@ -1076,16 +1118,58 @@
     const ctx = previewCanvas.getContext('2d');
     const statusEl = document.getElementById('status');
     const downloadBtn = document.getElementById('downloadBtn');
+	const historyBtn = document.getElementById('historyBtn');
+	const closeHistoryBtn = document.getElementById('closeHistoryBtn');
+	const historyDrawer = document.getElementById('historyDrawer');
+	const historyOverlay = document.getElementById('historyOverlay');
+
+	historyBtn.addEventListener('click', () => {
+	  historyDrawer.classList.add('open');
+	  historyOverlay.classList.add('open');
+
+	  if (typeof renderHistory === 'function') {
+		renderHistory();
+	  }
+	});
+	
+	document.querySelectorAll('input[name="menuType"]').forEach(radio => {
+	  radio.addEventListener('change', () => {
+		currentMenuType = radio.value;
+
+		updateTemplateSource();
+		renderPreview();
+	  });
+	});
+
+	closeHistoryBtn.addEventListener('click', () => {
+	  historyDrawer.classList.remove('open');
+	  historyOverlay.classList.remove('open');
+	});
+
+	historyOverlay.addEventListener('click', () => {
+	  historyDrawer.classList.remove('open');
+	  historyOverlay.classList.remove('open');
+	});
 
 	downloadBtn.addEventListener('click', () => {
-	  // --- скачивание картинки (если у тебя уже есть — оставь своё)
-	  const link = document.createElement('a');
-	  link.download = CONFIG.image.outputName;
-	  link.href = previewCanvas.toDataURL('image/png');
-	  link.click();
+	  let imageUrl = '';
+
+		try {
+		  imageUrl = previewCanvas.toDataURL('image/png');
+		} catch (e) {
+		  console.warn('Canvas заблокирован, сохраняем без картинки');
+		}
+
+		if (imageUrl) {
+		  const link = document.createElement('a');
+		  link.download = CONFIG.image.outputName;
+		  link.href = imageUrl;
+		  link.click();
+		}
+	  
 
 	  // --- сохранение в историю
-	  const history = JSON.parse(localStorage.getItem('menuHistory') || '[]');
+	  const history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
 
 	  const newItem = {
 		date: CONFIG.dayTitle.text || 'Без даты',
@@ -1099,7 +1183,7 @@
 	    history.shift();
 	  }
 
-	  localStorage.setItem('menuHistory', JSON.stringify(history));
+	  localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(history));
 
 	  console.log('Сохранено в историю:', newItem);
 
@@ -1108,6 +1192,7 @@
     renderHistory();
   }
 });
+	
 	
     const resetBtn = document.getElementById('resetBtn');
     const openSettingsBtn = document.getElementById('openSettingsBtn');
@@ -1171,6 +1256,98 @@
 	};
 
     function setStatus(text) { statusEl.textContent = text; }
+	
+	function renderHistory() {
+	  const container = document.getElementById('historyBody');
+	  let history;
+
+		try {
+		  history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
+		} catch (e) {
+		  history = [];
+		}
+
+		if (!Array.isArray(history)) {
+		  history = [];
+		}
+
+	  if (!history.length) {
+		container.innerHTML = '<div class="history-empty">История пуста.<br>Сохрани меню — оно появится здесь.</div>';
+		return;
+	  }
+
+	  container.innerHTML = '';
+
+	  history.slice().reverse().forEach((item, index) => {
+		const div = document.createElement('div');
+		div.className = 'history-item';
+
+		const date = new Date(item.createdAt).toLocaleString();
+
+		div.innerHTML = `
+		  <div class="history-item-info">
+			<div class="history-item-date">${item.date}</div>
+			<div class="history-item-meta">${date}</div>
+		  </div>
+		  <button class="history-item-del">✕</button>
+		`;
+		
+		div.addEventListener('click', () => {
+		  loadFromHistory(item);
+		});
+		
+		div.addEventListener('click', () => {
+		  loadFromHistory(item);
+		});
+
+		div.querySelector('.history-item-del').addEventListener('click', (e) => {
+		  e.stopPropagation();
+		  const updated = history.filter((_, i) => i !== (history.length - 1 - index));
+		  localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(updated));
+		  renderHistory();
+		});
+
+		container.appendChild(div);
+	  });
+	}
+	
+	function loadFromHistory(item) {
+	  if (!item) return;
+
+	  // восстанавливаем CONFIG
+	  Object.assign(CONFIG, item.config);
+
+	  // восстанавливаем state
+	  Object.keys(state).forEach(name => {
+		if (item.state[name]) {
+		  state[name] = JSON.parse(JSON.stringify(item.state[name]));
+		}
+	  });
+
+		Object.keys(state).forEach(name => {
+		  const block = state[name];
+
+		  const inputs = document.querySelectorAll('input, textarea');
+
+		  inputs.forEach(input => {
+			if (input.name === name + '_kcal') {
+			  input.value = block.kcal || '';
+			}
+
+			if (input.name === name + '_text') {
+			  input.value = block.text || '';
+			}
+		  });
+		});
+
+
+	  // обновляем картинку
+	  renderPreview();
+
+	  // закрываем историю
+	  document.getElementById('historyDrawer').classList.remove('open');
+	  document.getElementById('historyOverlay').classList.remove('open');
+	}
 
     function deepMerge(target, source) {
       for (const key of Object.keys(source)) {
@@ -1184,13 +1361,28 @@
       return target;
     }
 
-    function updateTemplateSource() {
-      templateImage.src = CONFIG.image.templatePath;
-      document.getElementById('metaTemplate').textContent = `Шаблон: ${CONFIG.image.templatePath}`;
-      document.getElementById('metaOutput').textContent = `Файл: ${CONFIG.image.outputName}`;
-      document.getElementById('metaImageSize').textContent =
-        `Размер картинки: ${CONFIG.image.size[0]} × ${CONFIG.image.size[1]}`;
-    }
+	function updateTemplateSource() {
+	  let path = CONFIG.image.templatePath;
+
+	  if (currentMenuType === 'dayx') {
+		path = CONFIG.image.templatePath2;
+	  }
+
+	  if (currentMenuType === 'recipes') {
+		path = CONFIG.image.templatePath3;
+	  }
+
+	  templateImage.src = path;
+
+	  document.getElementById('metaTemplate').textContent =
+		`Шаблон: ${path}`;
+
+	  document.getElementById('metaOutput').textContent =
+		`Файл: ${CONFIG.image.outputName}`;
+
+	  document.getElementById('metaImageSize').textContent =
+		`Размер картинки: ${CONFIG.image.size[0]} × ${CONFIG.image.size[1]}`;
+	}
 
     function buildForm() {
 	  document.getElementById('dayTitleInput').value = CONFIG.dayTitle.text || '';
@@ -1393,7 +1585,7 @@
       CONFIG.totalKcal.color = document.getElementById('setting-totalColor').value.trim() || 'rgba(79, 92, 148, 1)';
       CONFIG.totalKcal.pos[0] = Number(document.getElementById('setting-totalX').value) || 55;
       CONFIG.totalKcal.pos[1] = Number(document.getElementById('setting-totalY').value) || 1490;
-      CONFIG.render.totalPrefix = document.getElementById('setting-totalPrefix').value.trim() || 'Общая калорийность на день:';
+      CONFIG.render.totalPrefix = document.getElementById('setting-totalPrefix').value || 'Общая калорийность на день:';
       CONFIG.render.kcalSuffix = document.getElementById('setting-kcalSuffix').value.trim() || 'ккал';
       CONFIG.dayTitle.pos[0] = Number(document.getElementById('setting-dayTitleX').value) || CONFIG.dayTitle.pos[0];
       CONFIG.dayTitle.pos[1] = Number(document.getElementById('setting-dayTitleY').value) || CONFIG.dayTitle.pos[1];
@@ -1811,45 +2003,6 @@
 	const _origDownloadPng = downloadPng;
 	// вместо патча вешаем на кнопку сохранения
 	
-		// ── История меню ──────────────────────────────────────────
-	const HISTORY_KEY = 'mad-marathon-menu-history-v1';
-	const HISTORY_MAX = 14;
-	
-	var loadHistory = function() {
-	  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { return []; }
-	}
-
-	function saveHistory(list) {
-	  localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
-	}
-
-	const historyBtn = document.getElementById('historyBtn');
-	const historyDrawer = document.getElementById('historyDrawer');
-	const historyOverlay = document.getElementById('historyOverlay');
-	const closeHistoryBtn = document.getElementById('closeHistoryBtn');
-	const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-	const historyBody = document.getElementById('historyBody');
-
-	function openHistory() {
-	  renderHistoryList();
-	  historyDrawer.classList.add('open');
-	  historyOverlay.classList.add('open');
-	}
-	function closeHistory() {
-	  historyDrawer.classList.remove('open');
-	  historyOverlay.classList.remove('open');
-	}
-
-	historyBtn.addEventListener('click', openHistory);
-	closeHistoryBtn.addEventListener('click', closeHistory);
-	historyOverlay.addEventListener('click', closeHistory);
-
-	clearHistoryBtn.addEventListener('click', () => {
-	  if (!confirm('Удалить всю историю меню?')) return;
-	  localStorage.removeItem(HISTORY_KEY);
-	  renderHistoryList();
-	  setStatus('История очищена.');
-	});
 
 
 	function saveCurrentToHistory() {
@@ -1983,6 +2136,21 @@
 	buildForm();
 	fillGlobalSettings();
 	renderPreview();
+	
+	document.getElementById('historyBtn').onclick = () => {
+	  const drawer = document.getElementById('historyDrawer');
+	  const overlay = document.getElementById('historyOverlay');
+
+	  drawer.classList.add('open');
+	  overlay.classList.add('open');
+
+	  if (typeof renderHistory === 'function') {
+		renderHistory();
+	  }
+
+	  console.log('history click работает');
+	};
+	
   </script>
 
 
