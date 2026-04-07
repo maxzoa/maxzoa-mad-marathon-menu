@@ -1126,11 +1126,15 @@
 	historyBtn.addEventListener('click', () => {
 	  historyDrawer.classList.add('open');
 	  historyOverlay.classList.add('open');
-
 	  if (typeof renderHistory === 'function') {
-		renderHistory();
+		renderHistory();        // ← уже есть
 	  }
+	  
+	  // Добавь эту строку:
+	  console.log('История открыта, кнопка очистки готова');
 	});
+	
+	
 	
 	document.querySelectorAll('input[name="menuType"]').forEach(radio => {
 	  radio.addEventListener('change', () => {
@@ -1151,48 +1155,48 @@
 	  historyOverlay.classList.remove('open');
 	});
 
+	// =============================================
+	// КНОПКА «СОХРАНИТЬ МЕНЮ» — ИСПРАВЛЕНО
+	// =============================================
+
 	downloadBtn.addEventListener('click', () => {
-	  let imageUrl = '';
-
-		try {
-		  imageUrl = previewCanvas.toDataURL('image/png');
-		} catch (e) {
-		  console.warn('Canvas заблокирован, сохраняем без картинки');
-		}
-
-		if (imageUrl) {
-		  const link = document.createElement('a');
-		  link.download = CONFIG.image.outputName;
-		  link.href = imageUrl;
-		  link.click();
-		}
-	  
-
-	  // --- сохранение в историю
-	  const history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
-
-	  const newItem = {
-		date: CONFIG.dayTitle.text || 'Без даты',
-		state: JSON.parse(JSON.stringify(state)),
-		config: JSON.parse(JSON.stringify(CONFIG)),
-		createdAt: Date.now()
-	  };
-
-	  history.push(newItem);
-	  if (history.length > 15) {
-	    history.shift();
+	  // Скачиваем PNG
+	  try {
+		const link = document.createElement('a');
+		link.download = CONFIG.image.outputName || 'menu_output.png';
+		link.href = previewCanvas.toDataURL('image/png');
+		link.click();
+	  } catch (e) {
+		console.warn('Не удалось сохранить PNG');
 	  }
 
-	  localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(history));
+	  // Сохраняем в историю — только здесь!
+	  try {
+		let history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
 
-	  console.log('Сохранено в историю:', newItem);
+		const newItem = {
+		  date: CONFIG.dayTitle.text || 'Без даты',
+		  state: JSON.parse(JSON.stringify(state)),
+		  config: JSON.parse(JSON.stringify(CONFIG)),
+		  createdAt: Date.now()
+		};
 
-  // если есть функция
-  if (typeof renderHistory === 'function') {
-    renderHistory();
-  }
-});
-	
+		history.push(newItem);
+		if (history.length > 20) history.shift();
+
+		localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(history));
+
+		if (typeof renderHistory === 'function') {
+		  renderHistory();
+		}
+
+		setStatus('Меню сохранено и добавлено в историю ✓');
+		console.log('✅ Меню добавлено в историю');
+	  } catch (e) {
+		console.error('Ошибка сохранения в историю:', e);
+		setStatus('Меню сохранено (PNG), но ошибка в истории');
+	  }
+	});
 	
     const resetBtn = document.getElementById('resetBtn');
     const openSettingsBtn = document.getElementById('openSettingsBtn');
@@ -1212,6 +1216,20 @@
     const exportSettingsBtn = document.getElementById('exportSettingsBtn');
     const downloadProjectBtn = document.getElementById('downloadProjectBtn');
     const templateImage = new Image();
+	
+	// =============================================
+	// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+	// =============================================
+
+	function setStatus(text) {
+	  const statusEl = document.getElementById('status');
+	  if (statusEl) {
+		statusEl.textContent = text;
+	  } else {
+		console.log('Status:', text);
+	  }
+	}
+	
 	function compressImagePNG(file, maxSize = 500) {
 	  return new Promise((resolve) => {
 		const img = new Image();
@@ -1255,21 +1273,16 @@
 	  setStatus('Ошибка загрузки template.png');
 	};
 
-    function setStatus(text) { statusEl.textContent = text; }
-	
 	function renderHistory() {
 	  const container = document.getElementById('historyBody');
-	  let history;
+	  if (!container) return;
 
-		try {
-		  history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
-		} catch (e) {
-		  history = [];
-		}
-
-		if (!Array.isArray(history)) {
-		  history = [];
-		}
+	  let history = [];
+	  try {
+		history = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
+	  } catch (e) {
+		console.error('Ошибка чтения истории:', e);
+	  }
 
 	  if (!history.length) {
 		container.innerHTML = '<div class="history-empty">История пуста.<br>Сохрани меню — оно появится здесь.</div>';
@@ -1278,33 +1291,33 @@
 
 	  container.innerHTML = '';
 
-	  history.slice().reverse().forEach((item, index) => {
+	  history.slice().reverse().forEach((item, idx) => {
 		const div = document.createElement('div');
 		div.className = 'history-item';
-
-		const date = new Date(item.createdAt).toLocaleString();
+		const dateStr = new Date(item.createdAt).toLocaleString('ru-RU');
 
 		div.innerHTML = `
 		  <div class="history-item-info">
-			<div class="history-item-date">${item.date}</div>
-			<div class="history-item-meta">${date}</div>
+			<div class="history-item-date">${item.date || 'Без названия'}</div>
+			<div class="history-item-meta">${dateStr}</div>
 		  </div>
 		  <button class="history-item-del">✕</button>
 		`;
-		
-		div.addEventListener('click', () => {
-		  loadFromHistory(item);
-		});
-		
-		div.addEventListener('click', () => {
+
+		// Клик по карточке (кроме кнопки удаления)
+		div.addEventListener('click', (e) => {
+		  if (e.target.closest('.history-item-del')) return;
 		  loadFromHistory(item);
 		});
 
+		// Клик по кнопке удаления
 		div.querySelector('.history-item-del').addEventListener('click', (e) => {
 		  e.stopPropagation();
-		  const updated = history.filter((_, i) => i !== (history.length - 1 - index));
-		  localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(updated));
+		  let list = JSON.parse(localStorage.getItem('mad-marathon-menu-history-v1') || '[]');
+		  list.splice(list.length - 1 - idx, 1);   // удаляем по индексу
+		  localStorage.setItem('mad-marathon-menu-history-v1', JSON.stringify(list));
 		  renderHistory();
+		  setStatus('Запись удалена');
 		});
 
 		container.appendChild(div);
@@ -1312,41 +1325,55 @@
 	}
 	
 	function loadFromHistory(item) {
-	  if (!item) return;
+	  if (!item || !item.state) return;
 
-	  // восстанавливаем CONFIG
-	  Object.assign(CONFIG, item.config);
+	  // 1. Восстанавливаем дату меню
+	  CONFIG.dayTitle.text = item.date || '';
+	  const dayTitleInput = document.getElementById('dayTitleInput');
+	  if (dayTitleInput) {
+		dayTitleInput.value = CONFIG.dayTitle.text;
+	  }
 
-	  // восстанавливаем state
-	  Object.keys(state).forEach(name => {
-		if (item.state[name]) {
-		  state[name] = JSON.parse(JSON.stringify(item.state[name]));
+	  // 2. Восстанавливаем состояние блоков
+	  Object.keys(CONFIG.blocks).forEach(name => {
+		if (!state[name]) {
+		  state[name] = { kcal: '', text: '', file: null, objectUrl: '', base64: '' };
+		}
+
+		const savedBlock = item.state[name] || {};
+		state[name].kcal = savedBlock.kcal || '';
+		state[name].text = savedBlock.text || '';
+		state[name].base64 = savedBlock.base64 || '';
+
+		// Восстанавливаем картинку из base64 (если есть)
+		if (state[name].base64) {
+		  if (state[name].objectUrl) URL.revokeObjectURL(state[name].objectUrl);
+		  
+		  const byteString = atob(state[name].base64.split(',')[1]);
+		  const mimeString = state[name].base64.split(',')[0].split(':')[1].split(';')[0];
+		  const ab = new ArrayBuffer(byteString.length);
+		  const ia = new Uint8Array(ab);
+		  for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+		  const blob = new Blob([ab], { type: mimeString });
+		  state[name].objectUrl = URL.createObjectURL(blob);
+		  state[name].file = { name: `${name}.png` };
+		} else {
+		  state[name].objectUrl = '';
+		  state[name].file = null;
 		}
 	  });
 
-		Object.keys(state).forEach(name => {
-		  const block = state[name];
+	  // 3. Самое важное — перестраиваем всю форму заново с актуальными данными
+	  buildForm();
 
-		  const inputs = document.querySelectorAll('input, textarea');
-
-		  inputs.forEach(input => {
-			if (input.name === name + '_kcal') {
-			  input.value = block.kcal || '';
-			}
-
-			if (input.name === name + '_text') {
-			  input.value = block.text || '';
-			}
-		  });
-		});
-
-
-	  // обновляем картинку
+	  // 4. Обновляем превью
 	  renderPreview();
 
-	  // закрываем историю
-	  document.getElementById('historyDrawer').classList.remove('open');
-	  document.getElementById('historyOverlay').classList.remove('open');
+	  // 5. Закрываем панель истории
+	  historyDrawer.classList.remove('open');
+	  historyOverlay.classList.remove('open');
+
+	  setStatus(`Загружено меню: ${item.date || 'Без названия'}`);
 	}
 
     function deepMerge(target, source) {
@@ -1952,83 +1979,7 @@
 	  });
 	})();
 	
-	
 
-	function renderHistoryList() {
-	  const list = loadHistory();
-	  if (!list.length) {
-		historyBody.innerHTML = '<div class="history-empty">История пуста.<br>Сохрани меню — оно появится здесь.</div>';
-		return;
-	  }
-
-	  historyBody.innerHTML = '';
-	  list.forEach(entry => {
-		const item = document.createElement('div');
-		item.className = 'history-item';
-
-		// считаем общие ккал
-		const totalKcal = Object.values(entry.blocks)
-		  .reduce((sum, b) => sum + (parseInt(b.kcal) || 0), 0);
-
-		item.innerHTML = `
-		  <div class="history-item-info">
-			<div class="history-item-date">${entry.title}</div>
-			<div class="history-item-meta">${entry.savedAt} · ${totalKcal} ккал</div>
-		  </div>
-		  <button class="history-item-del" title="Удалить" data-id="${entry.id}">
-			<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-		  </button>
-		`;
-
-		// клик на саму карточку — загрузить
-		item.addEventListener('click', (e) => {
-		  if (e.target.closest('.history-item-del')) return;
-		  loadEntryFromHistory(entry);
-		});
-
-		// клик на крестик — удалить
-		item.querySelector('.history-item-del').addEventListener('click', (e) => {
-		  e.stopPropagation();
-		  let list = loadHistory();
-		  list = list.filter(x => x.id !== entry.id);
-		  saveHistory(list);
-		  renderHistoryList();
-		});
-
-		historyBody.appendChild(item);
-	  });
-	}
-
-	// ── Патчим downloadPng чтобы сохранял в историю ───────────
-	const _origDownloadPng = downloadPng;
-	// вместо патча вешаем на кнопку сохранения
-	
-
-
-	function saveCurrentToHistory() {
-	  const title = CONFIG.dayTitle.text || 'Без названия';
-	  const blocks = {};
-	  Object.keys(state).forEach(name => {
-		blocks[name] = {
-		  kcal: state[name].kcal || '',
-		  text: state[name].text || '',
-		  base64: state[name].base64 || ''
-		};
-	  });
-
-	  const entry = {
-		id: Date.now(),
-		title,
-		savedAt: new Date().toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
-		blocks
-	  };
-
-	  let list = loadHistory();
-	  list = list.filter(e => e.title !== title);
-	  list.unshift(entry);
-	  if (list.length > HISTORY_MAX) list = list.slice(0, HISTORY_MAX);
-	  saveHistory(list);
-	}
 
 	function loadEntryFromHistory(entry) {
 	  CONFIG.dayTitle.text = entry.title;
@@ -2137,19 +2088,59 @@
 	fillGlobalSettings();
 	renderPreview();
 	
-	document.getElementById('historyBtn').onclick = () => {
-	  const drawer = document.getElementById('historyDrawer');
-	  const overlay = document.getElementById('historyOverlay');
-
-	  drawer.classList.add('open');
-	  overlay.classList.add('open');
-
+	// === ИНИЦИАЛИЗАЦИЯ ИСТОРИИ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ ===
+	setTimeout(() => {
 	  if (typeof renderHistory === 'function') {
 		renderHistory();
 	  }
+	}, 500);
+	
 
-	  console.log('history click работает');
-	};
+	console.log('✅ История меню инициализирована');
+	
+	updateTemplateSource();
+    buildForm();
+    fillGlobalSettings();
+    renderPreview();
+
+    // === ИНИЦИАЛИЗАЦИЯ ИСТОРИИ ===
+    setTimeout(() => {
+      if (typeof renderHistory === 'function') {
+        renderHistory();
+      }
+    }, 300);
+
+    console.log('✅ История меню инициализирована');
+
+	// =============================================
+	// КНОПКА «ОЧИСТИТЬ ВСЮ ИСТОРИЮ»
+	// =============================================
+
+	const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+	if (clearHistoryBtn) {
+	  const freshBtn = clearHistoryBtn.cloneNode(true);
+	  clearHistoryBtn.parentNode.replaceChild(freshBtn, clearHistoryBtn);
+
+	  freshBtn.addEventListener('click', () => {
+		if (!confirm('Вы действительно хотите очистить всю историю меню?\n\nЭто действие нельзя отменить.')) {
+		  return;
+		}
+
+		localStorage.removeItem('mad-marathon-menu-history-v1');
+
+		if (typeof renderHistory === 'function') {
+		  renderHistory();
+		}
+
+		setStatus('История полностью очищена ✓');
+		console.log('✅ Вся история очищена');
+	  });
+
+	  console.log('✅ Обработчик кнопки "Очистить всю историю" добавлен');
+	} else {
+	  console.warn('⚠️ Кнопка #clearHistoryBtn не найдена');
+	}
 	
   </script>
 
