@@ -2212,6 +2212,30 @@
     } else {
       console.warn('⚠️ Кнопка #clearHistoryBtn не найдена');
     }
+	
+	// =============================================
+	// FIX: отключаем изменение number-input,
+	// но сохраняем скролл страницы
+	// =============================================
+
+	(function fixNumberInputWheelUX() {
+
+	  function onWheel(e) {
+		const active = document.activeElement;
+
+		if (
+		  active &&
+		  active.tagName === 'INPUT' &&
+		  active.type === 'number'
+		) {
+		  // 👇 ключевая магия
+		  active.blur(); // убираем фокус
+		}
+	  }
+
+	  document.addEventListener('wheel', onWheel, { passive: true });
+
+	})();
    
   </script>
 </body>
